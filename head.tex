@@ -1,0 +1,285 @@
+%        * * *    D E C L A R A T I O N S    * * *
+
+% documentstyle.  (default point size 10pt. For Proceeding versions add the
+%		   twocolumn option. If different margins are needed for 
+%                  left/right pages then the option twoside can be used 
+%                  together with the oddsidemargin/evensidemargin commands.
+%		   For twocolumn option use the command columnsep to define
+%		   the space between columns.
+
+% page size parameters. (height & width & head size & leftmargin)
+%
+\documentclass[11pt,twoside]{article}
+% \documentclass[11pt]{article}
+\usepackage{times,mathptmx}
+\usepackage{amsmath,amsthm,amssymb}
+%\usepackage{latexsym}
+%\usepackage{fp}
+%\usepackage{mparhack}
+\usepackage{stmaryrd}
+\usepackage[dvips]{graphics}
+\usepackage{epsfig}
+\usepackage{ifthen}
+%\usepackage{color}
+\usepackage{eucal}
+\usepackage[T1]{fontenc}
+\usepackage{verbatim}
+%\usepackage{comment}  --- only use locally in a file where you want it,
+%since it interferes badly with the normal operation of the comment
+%environment.
+\usepackage{fancyvrb}
+% \usepackage[notref,notcite]{showkeys}
+\usepackage{curves}
+\usepackage{epic}
+\usepackage{eepic}
+\usepackage{pstricks,pst-node,pst-text,pst-tree}
+\usepackage{pstricks-add}
+%\usepackage[verbose]{wrapfig}
+%\usepackage{draftcopy}
+%\usepackage{fancyhdr}
+\usepackage[us]{datetime}
+\usepackage{alltt}
+\usepackage{xspace}
+%\usepackage{multicol}
+\setlength{\textwidth}{6.0in}
+\setlength{\textheight}{8.0in}
+\setlength{\oddsidemargin}{31pt}
+\setlength{\evensidemargin}{0.35in}
+\setlength{\headheight}{0.3in}
+\setlength{\headsep}{0.5in}
+\setlength{\columnsep}{1.0cm}
+\vsize=8.5in
+\hoffset=-0.4in
+\voffset=-0.7in
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{1ex}
+%\renewcommand{\thefootnote}{\fnsymbol{footnote}} why???
+\renewcommand{\thefootnote}{\arabic{footnote}}
+%
+% pagestyle - plain (page numbers in bottom and head is empty) or
+%             empty (both bottom and head are empty)
+
+%\pagestyle{fancy}
+%\fancyhf{} % clears the slate
+%\setlength{\headrulewidth}{0.4pt}
+%\setlength{\footrulewidth}{0.0pt}
+%\setlength{\plainfootrulewidth}{0.4pt}
+%\setlength{\plainheadrulewidth}{0.0pt}
+%\lhead{\fancyplain{}{ {\it Computer Science at
+%{\small\wpi}:\ \ \ \ The Future (briefly)}} }
+%
+%\lhead{\fancyplain{}{\small {\it DRAFT DRAFT DRAFT DRAFT DRAFT 
+%DRAFT DRAFT DRAFT DRAFT DRAFT DRAFT }}}
+%\lfoot{\fancyplain{\small {\it DRAFT DRAFT DRAFT DRAFT DRAFT DRAFT DRAFT
+%DRAFT DRAFT DRAFT DRAFT DRAF}}{\small {\it DRAFT DRAFT DRAFT DRAFT DRAFT
+%DRAFT DRAFT DRAFT DRAFT DRAFT DRAFT DRAF}}}
+%\chead{}
+%\rhead{\fancyplain{}{\rm\thepage}}
+%\cfoot{}
+%\rfoot{}
+%\thispagestyle{fancyplain}  % This is for the title page
+% \begin{Verbatim}[commandchars=\\\{\},
+%       codes={\catcode`$=3\catcode`^=7\catcode`_=8}]....need find others
+
+%
+%        * * *    M A C R O S    * * *
+%
+\newcommand{\refeq}[1]{Eq.\;(\ref{#1})}
+\newcommand{\pp}{\paragraph}
+\newcommand{\noi}{\noindent}
+\newcommand{\wpi}{{\sc wpi}\xspace}
+\newcommand{\cs}{{\sc cs}\xspace}
+%\newcommand{\pmf}{{\sc pmf}\xspace}
+\newcommand{\pmf}{ probability mass function\xspace}
+\newcommand{\pgf}{{\sc pgf}\xspace}
+%\newcommand{\pgf}{ probability generating function\xspace}
+\newcommand{\ogf}{{\sc ogf}\xspace}
+%\newcommand{\ogf}{ ordinary generating function\xspace}
+\newcommand{\egf}{{\sc egf}\xspace}
+\newcommand{\mgf}{ moment generating function\xspace}
+%\newcommand{\egf}{ exponential generating function\xspace}
+\newcommand{\pdf}{ probability density function\xspace}
+\newcommand{\gf}{generating function\xspace}
+% \newcommand{\gf}{{\sc gf}\xspace}
+\newcommand{\bc}{binomial coefficient\xspace}
+\newcommand{\pfd}{ partial fraction decomposition\xspace}
+%\newcommand{\gf}{ generating function\xspace}
+\newcommand{\lf}{\lfloor}
+\newcommand{\rf}{\rfloor}
+\newcommand{\lc}{\lceil}
+\newcommand{\rc}{\rceil}
+\newcommand{\lp}{\left(}
+\newcommand{\rp}{\right)}
+\newcommand{\lbr}{\left[}
+\newcommand{\rbr}{\right]}
+\newcommand{\ul}{\underline}
+\newcommand{\bbb}{$\bullet$  }
+\newcommand{\fns}{\footnotesize}
+\newcommand{\DS}{\displaystyle}
+\newcommand{\bu}{\bullet}
+\newcommand{\eod}{\vrule height 6pt width 5pt depth 0pt}
+\newcommand{\parsec}{\par\noindent}
+\newcommand{\bigspace}{\bigskip\parsec}
+\newcommand{\med}{\medskip\parsec}
+%\newcommand{\ss}{\sigma}
+\newcommand{\pr}{{\rm Pr}}
+\renewcommand{\Pr}{\ensuremath{\mathbb{P}}\xspace}
+\newcommand{\E}{\ensuremath{\mathbb{E}}\xspace}
+\newcounter{hours}
+\newcounter{minutes}
+\newcommand{\ptime}{\setcounter{hours}{\time/60}%
+     \setcounter{minutes}{\time-\value{hours}*60} \thehours:\theminutes}
+\newcommand{\todo}[1]{{\rule{0.5em}{1ex}\textbf{ #1}}}
+\renewcommand{\baselinestretch}{1.0}
+\renewcommand{\baselinestretch}{1.2}
+\newenvironment{singlespace}{\def\baselinestretch{1.0}\large\normalsize}{\par}
+\newcommand{\nsection}[1]{\section[#1]{\hspace{-1em}.\hspace{1em}#1}}
+%\newcommand{\mbf}[1]{\ensuremath{\text{\textbf{\emph{\;#1}}}}}
+\newcommand{\mbf}[1]{\ensuremath{\text{\textbf{\emph{#1}}}}}
+%\newcommand{\comment}[1]{}
+\newcommand{\propsubset}
+    {\stackrel{\subset}{\scriptscriptstyle \not {\scriptstyle =}}}
+\newcommand{\hypoth}   {\stackrel{?}{=}}
+\newcommand{\hypothge}   {\stackrel{?}{\ge}}
+\newcommand{\hypothle}   {\stackrel{?}{\le}}
+\newcommand{\hypothl}   {\stackrel{?}{<}}
+\newcommand{\lset}{\left \{}
+\newcommand{\rset}{\right \}}
+\newcommand{\halfn}{{\left\lfloor{n \over 2}\right\rfloor}}
+\newcommand{\unl}{\underline}
+\newcommand{\ovl}{\overline}
+\renewcommand{\ge}{\geqslant}
+\renewcommand{\le}{\leqslant}
+\renewcommand{\geq}{\geqslant}
+\renewcommand{\leq}{\leqslant}
+\newcommand{\EE}{{\cal E}}
+\newcommand{\FF}{{\cal F}}
+\newcommand{\eps}{\varepsilon}
+\newcommand{\cA}{{\mathcal A}} \newcommand{\cB}{{\mathcal B}}
+\newcommand{\cC}{{\mathcal C}} \newcommand{\cD}{{\mathcal D}}
+\newcommand{\cE}{{\mathcal E}} \newcommand{\cF}{{\mathcal F}}
+\newcommand{\cG}{{\mathcal G}} \newcommand{\cH}{{\mathcal H}}
+\newcommand{\cI}{{\mathcal I}} \newcommand{\cJ}{{\mathcal J}}
+\newcommand{\cK}{{\mathcal K}} \newcommand{\cL}{{\mathcal L}}
+\newcommand{\cM}{{\mathcal M}} \newcommand{\cN}{{\mathcal N}}
+\newcommand{\cO}{{\mathcal O}} \newcommand{\cP}{{\mathcal P}}
+\newcommand{\cQ}{{\mathcal Q}} \newcommand{\cR}{{\mathcal R}}
+\newcommand{\cS}{{\mathcal S}} \newcommand{\cT}{{\mathcal T}}
+\newcommand{\cU}{{\mathcal U}} \newcommand{\cV}{{\mathcal V}}
+\newcommand{\cW}{{\mathcal W}} \newcommand{\cX}{{\mathcal X}}
+\newcommand{\cY}{{\mathcal Y}} \newcommand{\cZ}{{\mathcal Z}}
+\newcommand{\CC}{\mathbb{C}} \newcommand{\NN}{\mathbb{N}}
+\newcommand{\OO}{\mathbb{O}} \newcommand{\II}{\mathbb{I}}
+\newcommand{\RR}{\mathbb{R}} \newcommand{\TT}{\mathbb{T}}
+\newcommand{\ZZ}{\mathbb{Z}} \newcommand{\QQ}{\mathbb{Q}}
+
+%\newcommand{\eqsp}{\mbox{\ \ \ \ \ }}
+\newcommand{\grad}{\ensuremath{^{\circ}}} % the little circle for degrees
+%\newcommand{\halfp}[1]{\frac{1}{2} \cdot \left ( #1 \right )}
+\newcommand{\uff}{\leftrightarrow}% short single 2-way arrow
+\newcommand{\ftz}{\footnotesize}
+\newcommand{\frct}[2]
+{\ensuremath{\raisebox{.3ex}{\ftz #1}\!/\!\raisebox{-0.3ex}{\ftz#2}}}
+\newcommand{\frcts}[2]
+{\ensuremath{\raisebox{.3ex}{\ftz #1}\!/\!\raisebox{-0.3ex}{\ftz#2}}\xspace}
+%\newcommand{\half}{\ensuremath{\frac{1}{2}}}
+\newcommand{\half}{\frct{1}{2}}
+\newcommand{\bsl}{\ensuremath{\backslash}}
+\newcommand{\eq}{\equiv}
+\newcommand{\eqf}{\equiv_f}
+\newcommand{\rv}{random variable\xspace}
+\newcommand{\lar}{\Longrightarrow}  %double arrow (=implies)
+%\newcommand{\implies}{\Longrightarrow}  %double arrow 
+\newcommand{\olar}{\longrightarrow}  %single arrow
+\newcommand{\loro}{\longleftrightarrow}  %single arrow
+\newcommand{\Loro}{\Longleftrightarrow}  %double arrow
+\newcommand{\laa}{\ensuremath{\leftarrow}}
+\newcommand{\lbb}{\ensuremath{\rightarrow}}
+% both of those below should be replaced by \to
+%\newcommand{\oar}{\rightarrow}
+%\newcommand{\con}{\rightarrow}
+\newcommand{\cd}{\mbox{$\stackrel{d}{\rightarrow}$}}
+\newcommand{\convd}{\mbox{$\stackrel{d}{\longrightarrow}$}}
+\newcommand{\cp}{\mbox{$\stackrel{p}{\rightarrow}$}}
+\newcommand{\map}{{\sc maple}\xspace}
+\newcommand{\eqdef}{\stackrel{\rm def}{=}}
+\newcommand{\abs}[1]{\left| #1\right|}
+\newcommand{\set}[1]{\left\{ #1\right\}}
+\newcommand{\Stwo}[2]{\left\langle{#1\atop #2}\right\rangle}
+\newcommand{\suml}{\sum\limits}
+\newcommand{\prodl}{\prod\limits}
+\newcommand{\pile}[2]{\genfrac{}{}{0pt}{}{#1}{#2}}  % like troff pile
+\newcommand{\st}[2]{\genfrac{[}{]}{0pt}{}{#1}{#2}}  % stirling I
+\newcommand{\stt}[2]{\genfrac{\{}{\}}{0pt}{}{#1}{#2}}  %stirling II
+\newcommand{\eul}[2]{\genfrac{\langle}{\rangle}{0pt}{}{#1}{#2}}  %euler
+\newcommand{\head}{{\textsf{H}}\xspace}
+\newcommand{\tail}{{\textsf{T}}\xspace}
+
+\newcommand{\dfsa}{\textsc{dfs}\xspace}
+\newcommand{\bfsa}{\textsc{bfs}\xspace}
+\newcommand{\dfs}{depth-first search\xspace}
+\newcommand{\bfs}{breadth-first search\xspace}
+\newcommand{\rhs}{right-hand side\xspace}
+\newcommand{\lhs}{left-hand side\xspace}
+\newcommand{\rht}{right-hand subtree\xspace}
+\newcommand{\lht}{left-hand subtree\xspace}
+\newcommand{\pih}{{\hat p}_i}
+\newcommand{\pbar}{\mbox{\textbf{\textit{p}}}}
+\newcommand{\nbar}{\mbox{\textbf{\textit{n}}}}
+\newcommand{\zbar}{\mbox{\textbf{\textit{z}}}}
+\def\squarebox#1{\hbox to #1{\hfill\vbox to #1{\vfill}}}
+\newcommand{\ed}{\mbox{$ \ \stackrel{d}{=}$ \ }}
+\newcommand{\bbx}{\mbox{}\kern2ex\hfill\mbox{$\Box$}}
+% \renewcommand{\qed}{ \mbox{}\kern1ex\hfill\rule{1.4ex}{1.4ex}}
+\newtheorem{Proposition}{Proposition}
+\newtheorem{Theorem}{Theorem}
+\newtheorem{Lemma}{Lemma}
+\newtheorem{THEOREM}{Theorem}
+%\newenvironment{theorem}{\begin{THEOREM} \hspace{-.80em} {\bf :} \rm}%
+% the above version was before I switched to amsthm
+\newenvironment{theorem}{\begin{THEOREM}  \rm}%
+                        {\end{THEOREM}}
+\newtheorem{PROPERTY}{Property}
+\newenvironment{property}{\begin{PROPERTY} \hspace{-.80em} {\bf :} \rm}%
+                        {\end{PROPERTY}}
+%\newtheorem{COROLLARY}[THEOREM]{Corollary}
+\newtheorem{COROLLARY}{Corollary}
+%\newenvironment{corollary}{\begin{COROLLARY} \hspace{-.80em} {\bf :} \rm}%
+\newenvironment{corollary}{\begin{COROLLARY} \hspace{-.10em} }%
+                          {\end{COROLLARY}}
+\newtheorem{LEMMA}{Lemma}
+\newenvironment{lemma}{\begin{LEMMA} \hspace{-.10em} \rm}%
+                      {\end{LEMMA}}
+\newtheorem{OBSERVATION}{Observation}
+\newenvironment{observation}{\begin{OBSERVATION} \hspace{-.80em} {\bf :} \rm}%
+                      {\end{OBSERVATION}}
+\newtheorem{CLAIM}{Claim}
+\newenvironment{claim}{\begin{CLAIM} \hspace{-.10em}  \rm}%
+                      {\end{CLAIM}}
+\newtheorem{EXAMPLE}{Example}
+\newenvironment{example}{\begin{EXAMPLE} \hspace{-.30em} {\bf :} \rm}%
+                      {\end{EXAMPLE}}
+% \newenvironment{proof}{\noindent {\bf Proof:} \hspace{.677em}}%  cf. \qed
+%                      {\hfill \qed\\}
+\newenvironment{sketch}{\noindent {\bf Proof sketch:} \hspace{.677em}}%
+                      {\hfill \qed\\}
+\newtheorem{DEFINITION}{Definition}
+\newenvironment{definition}{\begin{DEFINITION} \hspace{-.80em} {\bf :} \rm}%
+                      {\end{DEFINITION}}
+\newenvironment{df}{\begin{DEFINITION}  \rm}%
+          {\hfill\protect$\lhd$\end{DEFINITION}} % changed by MH 5/11/08
+\newtheorem{REMARK}{Remark}
+\newenvironment{remark}{\begin{REMARK} \hspace{-.80em} {\bf :} \rm}%
+                      {\end{REMARK}}
+\newenvironment{pic}[1]%
+{\input{#1}\begin{figure}\centerline{\box\graph}\vspace*{\bigskipamount}}%
+{\end{figure}}
+\newenvironment{thecomment}{\setbox0=\vbox\bgroup}{\egroup}
+
+%
+%        * * *    D O C U M E N T    * * *
+%
+
+%\special{!userdict begin /start-hook{true statusdict /setduplexmode get exec}def end}
+
+%\begin{document}

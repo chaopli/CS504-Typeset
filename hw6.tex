@@ -1,0 +1,207 @@
+\include{head}
+%\usepackage{maple2e}  ...if needed, disable epsfig in head
+%  The following switch distinguishes between homework (solu=0) and its
+%  solution (solu=1).
+\usepackage{dcolumn}
+% \usepackage{stmaryrd}
+\newcommand{\bst}{binary search tree\xspace}
+\setlength{\leftmargin}{0.00in}
+\setlength{\leftmargini}{0.00in}
+\setlength{\leftmarginii}{0.00in}
+\newcommand{\hwno}{6}
+\newcommand{\solu}{1}
+\ifthenelse{\equal{\solu}{1}}%
+{\renewenvironment{comment}{\  \\ {\bf Solution:\ \ } }}{}%
+
+\begin{document}
+\pagestyle{myheadings}
+%\newcommand{\pfd}{partial fraction decomposition\xspace}
+\ifthenelse{\equal{\solu}{0}}%
+{\markboth{{\sc cs504:}{\it \ \ Homework \hwno}}{{\it \ \ Homework \hwno}}}%
+{\markboth{{\sc cs504:}{\it \ \ Homework \hwno:  Solutions }}{{\it \ \ %
+Homework \hwno:  Solutions}}}
+
+\thispagestyle{empty}
+\vspace*{-1.3in}
+\begin{center}
+\Large{CS504: Analysis of Computations and Systems --- Spring \the\year}
+\end{center}
+
+%\voffset=-0.7in
+%\hoffset=-0.5in
+%\null\vskip 1.1cm
+\begin{center}
+\ifthenelse{\equal{\solu}{0}}%
+{{\large\bf Homework \hwno }\\[1.5ex]}
+{{\bf\large \hspace*{0.30in}Solution for Homework \hwno}
+\hspace*{0.70in}Posted: \currenttime,\  \today\\[1.5ex]}
+\end{center}
+\ifthenelse{\equal{\solu}{0}}%
+{\hfill Due: Beginning of class, Wednesday, February 26, 2014\\}{}
+%
+%\begin{center}
+%(I shall complete it within a few days)
+%\end{center}
+
+% \vspace*{-0.3in}
+
+\begin{enumerate}
+\item
+In the following $f()$ and $g()$ are the \gf{s} of some
+sequences, and therefore have power series developments. The symbols
+$z$ and $a$ there are an indeterminate and a constant, respectively.
+Explain the relations:\\
+$\DS g(z)=f(z-a) ~~~\lar~~(1)~[(z+a)^n]\,f(z)=g_n;
+\quad (2)~~ [ z^n ]\,f(z) = \sum_{k} \,\binom{k}{ n} g_k \,a^{k-n} $.\\
+This can be used to connect the developments of the same function in two
+points.
+\begin{comment}
+Evidently, if $g(z)=f(z-a)$ holds, presumably for any value of $z$,
+then also $g(z+a)=f(z)$.  The \lhs has the expansion
+$g(z+a)=\suml_{k\ge0}g_k(z+a)^k$.  Hence the first claim:
+$\DS[(z+a)^n]g(z+a) =[(z+a)^n]\suml_{k\ge0}g_k(z+a)^k=g_n$.
+And since $g(z+a)=f(z)$, the claim holds.
+
+The second one is more direct:
+\[
+[z^n]f(z) = [z^n]g(z+a)
+=[z^n]\suml_{k\ge0}g_k(z+a)^k
+=\suml_{k\ge0}g_k[z^n] \sum_j \binom kj z^ja^{k-j}
+=\suml_{k\ge0}g_k \binom kn a^{k-n}
+\]
+where the extraction operator annihilates all the terms with powers of $z$
+which are not $n$.
+
+{\em Now that I am done grading, two comments:}\\
+1.  Note the ``annihilation'' or selection action of the operator
+$[z^n]$.  It is often useful in simplifying complex expressions, as it
+removes one summation level, by selecting a single term out of the summed
+over sequence.\\
+2.  A note of different kind; a couple of students did more or less what I
+write above, but for the binomial expansion used the dummy index $n$ (in
+lieu of my $j$), not
+noticing that it is already in use, in the extraction operator.
+This produced a meaningless mess.  Dummy indices must be ``fresh,'' and
+newly-minted. 
+\end{comment}
+\item
+Expand the \ogf $d(x) = (4-2x+x^2)^{-1}$.  Provide for $d_n$ a closed form
+expression, without complex numbers.
+\begin{comment}
+%\mbf{(b)\ \ }
+Complex numbers enter the calculation here since the given quadratic does
+not have real roots; instead, they are $1\pm i\sqrt3$.  We find
+\begin{align*}
+d_n &= [x^n]\,\frac1{4-2x+x^2} = [x^n]\frac1{(1-i\sqrt{3} -x)(1+i\sqrt{3}
+-x)} =[x^n] \frac i{2\sqrt3}\lp \frac1{1+i\sqrt{3} -x} -\frac1{1-i\sqrt{3}
+-x}\rp,
+\end{align*}
+following a \pfd.  This can be further developed,
+\begin{align*}
+d_n &= \frac i{2\sqrt3} [x^n] \lp
+\frac1{1+i\sqrt3} \frac1{1 -\frac x{1+i\sqrt{3}}}
+- \frac1{1-i\sqrt3} \frac1{1 -\frac x{1-i\sqrt{3}}} \rp\\
+ &= \frac i{2\sqrt3} \lp
+\frac1{1+i\sqrt3} \lp\frac1{1+i\sqrt3} \rp^n
+-\frac1{1-i\sqrt3} \lp\frac1{1-i\sqrt3} \rp^n \rp.
+\end{align*}
+While this involves complex numbers, they are complex conjugates, and the
+result of the subtraction is real. The expression can be somewhat
+simplified; however, you were asked for an
+explicitly real expression, not just real-valued, so we need to continue
+beyond a simplification.\\
+Since $(1-i\sqrt3) (1+i\sqrt3)=4$, we can write 
+$\DS\frac1{1-i\sqrt3} = \frac14\,(1+i\sqrt3)$, and
+\[
+d_n = \frac i{2\sqrt3}\frac1{4^{n+1}}\lp (1-i\sqrt3)^{n+1}-
+(1+i\sqrt3)^{n+1}\rp.
+\]
+We continue with the polar representation of the complex numbers:
+$u+iv=r\,\exp\lp i\tan^{-1} (v/u)\rp$, where $r$ is the absolute value of
+the number, $\sqrt{u^2+v^2}$, which is 2 for the numbers we have, and the
+tangent of the angle, $\theta$ in the diagram is $\sqrt3$, hence
+$\theta=\pi/3$.
+
+\psset{unit=2.2mm,arrows=-,arrowsize=4pt,nodesep=0pt,linewidth=0.6pt}
+\begin{pspicture}(-20,-20)(15,20)
+% \pscircle[linecolor=blue](25,0){20}
+\psline[arrows=->](0,0)(12,0)
+\psline[arrows=->](0,-19)(0,19)
+\pnode(0,0){orig} \cnode*(10,17.32){1pt}{b} \cnode*(10,-17.32){1pt}{c}
+\ncline{orig}{b}\naput[nrot=:U]{$r=2$}
+\ncline{orig}{c} \ncline{b}{c}
+\rput(14.0, 0){$\Re$}
+\rput(-2.0, 17){$\Im$}
+\rput(2.6,2.0){$\theta$}
+\rput(13.5,17.1){$1+i\sqrt3$}
+\rput(13.5,-17.1){$1-i\sqrt3$}
+\end{pspicture}
+
+Therefore $1\pm i\sqrt3 = 2e^{\pm i\theta}$, and
+$(1\pm i\sqrt3)^{n+1} = 2^{n+1}e^{\pm i(n+1)\pi/3}$.  We use de Moivre
+formula, the facts that $\cos(-x)= \cos(x)$ while  $\sin (-x) = -\sin (x)$,
+and substitute into $d_n$
+\[
+d_n = \frac i{2\sqrt3}\frac{2^{n+1}}{4^{n+1}}
+\lp \cos (n+1)\frac\pi3 -i \sin (n+1)\frac\pi3 -\cos (n+1)\frac\pi3
+-i\sin (n+1)\frac\pi3\rp
+\]
+The cosines cancel, the sines add, multiplying $i$ by itself corrects the
+sign, hence,
+\[
+d_n= \frac1{2^{n+1}\,\sqrt3}\sin  (n+1)\frac\pi3,
+\qquad \text{ while}\quad 
+ \sin k\frac\pi3 = \begin{cases} 0& k=3r\\ 
+ \frac{\sqrt3}2 & k=6r+1, \quad\text{ or } 6r+2\\
+ -\frac{\sqrt3}2 & k=6r-1, \quad\text{ or } 6r-2,\end{cases}
+\]
+for any integer $r$. Therefore 
+\[
+d_n=\frac{V_n}{2^{n+2}}, \qquad \text{ where }\quad 
+V_n = \begin{cases} 0, & n=3r-1\\ 1, & n=6r, \quad\text{ or }~6r+1\\
+ -1,  & n=6r-2, \quad\text{ or }~6r-3. \end{cases}
+\]
+And then it is always a smart idea to check, and the easiest way is to ask
+a computer with an algebra package (I use \map) to do it.  Here it is on
+\map, enough to convince me I made no error:
+\begin{verbatim}
+t := 1/(4-2*x+x^2): series(t, x=0, 12);
+1   1     1   3   1   4    1   6    1   7    1    9    1    10   / 12\
+- + - x - -- x  - -- x  + --- x  + --- x  - ---- x  - ---- x   +O\x  /
+4   8     32      64      256      512      2048      4096  
+\end{verbatim}
+
+\end{comment}
+\end{enumerate}
+\end{document}
+\item \label{item4}
+\begin{comment}
+\end{comment}
+
+
+\end{enumerate}
+\end{document}
+\item
+\begin{comment}
+\end{comment}
+\begin{align*}
+\end{align*}
+\bigskip
+\item
+\begin{comment}
+\end{comment}
+
+\noindent
+{\bf Part II.}
+
+Do the following exercises from Heck: {\em Introduction to Maple},
+pp63--4:\\
+2,\ \ \ 
+3(a),(d)\ \ \ 
+6,\ \ \ 
+11,\ \ \ 
+14\\
+\noindent
+{\bf 3.}
+%\rule{6in}{1mm}
+\end{document}

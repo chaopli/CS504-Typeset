@@ -1,0 +1,74 @@
+\documentclass{article}
+\usepackage{amsmath}
+\title{Count}
+\author{Prof. Micha Hofri\\Typeset by Chao Li, \today}
+\newcommand{\twopartdef}[4]
+{
+  \left\{
+  \begin{array}{ll}
+    #1 & \mbox{if } #2 \\
+    #3 & \mbox{if } #4
+  \end{array}
+  \right.
+}
+\begin{document}
+\maketitle
+Let's look at the following pseudocode for a function {\sl Max} that
+locates the largest entry in a 1-origin array $A$. The count column
+shows the number of times each line is executed:\\
+\begin{center}
+\begin{tabular}{c c l}  % I suggest you widen the columns, or, as I now
+% do, I do not use tabular and instead tweak positions, with explicit
+% \hspace instructions.  tabular may be better, but wider columns.
+     & count          & \\
+1.   & $1$              & $Max(A,n)$ \\
+2.   & $1$              & $int\ m, k = 1;$ \\
+3.   & $1+X_n$        & $m = A[k]$ \\
+4.   & $n$            & $k = k$++ \\
+5.   & $n$            & $if(k > n) \overset{1}{\longrightarrow} 8$ \\
+6.   & $n-1$          & $if(m>=A[k]) \overset{n-X_n-1}{\longrightarrow} 4$ \\
+7.   & $X_n$          & $\overset{X_n}{\longrightarrow} 3$ \\
+8.   & $1$              & $return\ m$ \\
+\end{tabular}
+\end{center}
+The code above represents the process of finding the maximum number in
+array A with the size of n.
+The count numbers are as indicated, where $X_n$ denotes the number of
+times the value of $m$, the current candidate for top value, needs to be
+updated. Except $X_n$ they are all deterministic.
+The extreme values of $X_n$ are a maximum of $n-1$ and
+minimum value of $0$.\\
+
+% need to add the probabilities of these extreme values, and point out the
+% probabilities are very different!
+
+Now we are interested in the average value of $X_n$. We define an
+indicator random variable: \\
+\begin{center}
+$y_i = \twopartdef {0}{$no updating of $m$ when $k=i} {1} {m$ is updated
+when $k=i}$
+\end{center}
+%  random variables are denotes by upper-case letters, Y not y
+\[
+Y_i =
+\begin{cases}
+0 & \text{ No updating of $m$ when } k=i\\
+1 & m \text{ is updated in position  } i.
+\end{cases}
+\]
+In here, $Y_i$ is an independent random variable, so we have:\\
+% here you need to explain why they are independent, and why the
+% probability below is as you say.
+\begin{center}
+\begin{align}
+X_n &= \sum_{i=2}^{n}y_i\\
+E[X_n] &= \sum_{i=2}^nE[y_i]=\sum_{i=2}^n\frac{1}{i}=H_n-1
+\end{align}
+\end{center}
+in which, \[E[y_i]=1\cdot{Pr(y_i=1)}=\frac{1}{i}\]\\
+\end{document}
+
+%%% Local Variables: 
+%%% mode: latex
+%%% TeX-master: t
+%%% End: 

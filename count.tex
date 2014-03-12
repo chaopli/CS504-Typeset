@@ -1,0 +1,54 @@
+\documentclass{article}
+\usepackage{amsmath}
+\title{Count}
+\author{Prof. Micha Hofri}
+\newcommand{\twopartdef}[4]
+{
+  \left\{
+  \begin{array}{ll}
+    #1 & \mbox{if } #2 \\
+    #3 & \mbox{if } #4
+  \end{array}
+  \right.
+}
+\begin{document}
+\maketitle
+Let's look at the following pseudocode and count the executing times
+of each step:\\
+\begin{center}
+\begin{tabular}{c c l}
+     & count          & \\
+1.   & $1$              & $Max(A,n)$ \\
+2.   & $1$              & $int\ m, k = 1;$ \\
+3.   & $1+X_n$        & $m = A[k]$ \\
+4.   & $n$            & $k = k++$ \\
+5.   & $n$            & $if(k > n) \overset{1}{\longrightarrow} 8$ \\
+6.   & $n-1$          & $if(m>=A[k]) \overset{n-X_n-1}{\longrightarrow} 4$ \\
+7.   & $X_n$          & $\overset{X_n}{\longrightarrow} 3$ \\
+8.   & $1$              & $return\ m$ \\
+\end{tabular}
+\end{center}
+The code above represents the process of finding the maximum number in
+array A with the size of n. The count numbers are indicated, and in
+which $X_n$ represents an unknown number whose max value is $n-1$ and
+minimun value is $0$. \\
+Now we are interested in the average value of $X_n$. We state an
+indicator random value: \\
+\begin{center}
+$y_i = \twopartdef {0}{$no updating of $m$ when $k=i} {1} {m$ is updated
+when $k=i}$
+\end{center}
+In here, $y_i$ is an independent random variable, so we have:\\
+\begin{center}
+\begin{align}
+X_n &= \sum_{i=2}^{n}y_i\\
+E[X_n] &= \sum_{i=2}^nE[y_i]=\sum_{i=2}^n\frac{1}{i}=H_n-1
+\end{align}
+\end{center}
+in which, \[E[y_i]=1\cdot{Pr(y_i=1)}=\frac{1}{i}\]\\
+\end{document}
+
+%%% Local Variables: 
+%%% mode: latex
+%%% TeX-master: t
+%%% End: 

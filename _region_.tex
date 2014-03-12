@@ -1,0 +1,28 @@
+\message{ !name(recurrence.tex)}\documentclass{article}
+\usepackage{amsmath}
+\title{Recurrence}
+\author{Prof. Micha Hofri}
+\newtheorem{gsr}{Theorem}
+\newcommand{\twopartdef}[4]
+{
+  \left\{
+  \begin{array}{ll}
+    #1 & \mbox{if } #2 \\
+    #3 & \mbox{if } #4
+  \end{array}
+  \right.
+}
+\begin{document}
+
+\message{ !name(recurrence.tex) !offset(141) }
+\begin{center}
+\twopartdef{H}{with prob $\frac{1}{2i+1}$}{T}{with prob$1-\frac{1}{2i+1}=\frac{2i}{2i+1}$}
+\end{center}
+\message{ !name(recurrence.tex) !offset(139) }
+
+\end{document}
+
+%%% Local Variables: 
+%%% mode: latex
+%%% TeX-master: t
+%%% End: 

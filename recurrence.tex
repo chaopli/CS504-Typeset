@@ -1,0 +1,197 @@
+\documentclass{article}
+\usepackage{amsmath}
+\title{Recurrence}
+\author{Prof. Micha Hofri}
+\newtheorem{gsr}{Theorem}
+\newcommand{\twopartdef}[4]
+{
+  \left\{
+  \begin{array}{ll}
+    #1 & \mbox{} #2 \\
+    #3 & \mbox{} #4
+  \end{array}
+  \right.
+}
+\begin{document}
+\maketitle
+First order linear recurrence:\\
+\[
+x_{n+1}=b_nx_n+a_n\qquad n\geq m
+\]
+in which ${a_n}$, ${b_n}$ and $x_m$ are known.\\
+Then we have the following general form to calculate $X_{n+1}$\\
+\begin{align*}
+x_{n+1}&=\sum_{j=m}^na_j\prod_{i=j+1}^nb_i+x_m\prod_{i=m}^nb_i \\
+&=a_n(\sum_{j=m}^{n-1}a_j\prod_{i=j+1}^{n-1}b_i+x_m\prod_{i=m}^{n-1}b_i)+b_n \\
+\end{align*}
+Using the above formulation, let's look at an interesting example:\\
+Assuming a loan mortagage instance, which has the following definitions:\\
+\begin{center}
+$A$ - loan amount \\
+$m$ - monthly payment \\
+$\rho$ - monthly interest rate \\
+$R_n$ - principal at the end of month n \\
+$R_0=A$ \\
+$M=360$ - loan duration \\
+\end{center}
+Each month the remaining money we have to pay is:
+\[
+R_{n+1}=R_n(1+\rho)-m
+\]
+Then we have $R_M=0$ because we have no money to pay when we have paid
+$M$ months and paid off the loan. And now we want to calculate the
+monthly payment m.\\
+\begin{align*}
+  R_M&=\sum_{j=0}^{M-1}(-m)\prod_{i=j+1}^{M-1}(1+\rho)+A(1+\rho)^M\\
+  &=\sum_{j=0}^{M-1}(-m)(1+\rho)^{M-j-1}+A(1+\rho)^M\\
+  &=(1+\rho)^M(A-m\sum_{j=0}^{M-1}\frac{1}{(1+\rho)^M}\\
+  &=(1+\rho)^MA-\frac{m}{\rho}((1+\rho)^M-1)=0
+\end{align*}
+So
+\[
+m=\frac{A\cdot\rho(1+\rho)^M}{(1+\rho)^M-1}
+\]
+When we have the following instance:
+\begin{align*}
+A&=100,000\\
+\rho&=\frac{0.06}{12}=0.005
+\end{align*}
+Then we have $m=598.98$. \\
+
+Next, let's continue. First, give some calculation. \\
+\[
+\binom{n}{m}=\binom{n-1}{m}+\binom{n-1}{m-1}=\frac{n}{m}\binom{n-1}{m-1}
+\]
+Proof:\\
+\begin{align}
+\binom{n}{m}&=\frac{n!}{m!(n-m)!} \\
+\binom{n-1}{m-1}&=\frac{(n-1)!}{(n-m)!(m-1)!} \\
+\binom{n-1}{m}&=\frac{(n-1)!}{(n-m-1)!m!}
+\end{align}
+(2)$\cdot \frac{n}{m}$ apparently equals to (1)\\
+Define $S_n$ the summation of the first n terms of $f(n)$, so \\
+\[
+S_n=\sum_{k=1}^nf(k)=\sum_{k=1}^{n-1}f(k)+f(n)
+\]
+Then if we are given:\\
+\[
+a_n=\sum_{k=1}^n\binom{n}{k}\frac{(-1)^{k+1}}{k}
+\]
+what can we derive from the above equation?\\
+Using the above conclusion:\\
+\begin{align*}
+a_n&=\sum_{k=1}^n\left(\binom{n-1}{k-1}\frac{(-1)^{k+1}}{k}+\binom{n-1}{k}\frac{(-1)^{k+1}}{k}\right)
+  \\
+&=\underbrace{\sum_{k=1}^{n-1}\binom{n-1}{k}\frac{(-1)^{k+1}}{k}}_{a_{n-1}}+\sum_{k=1}^n\frac{(-1)^{k+1}}{n}\binom{n}{k}\\
+&=a_{n-1}-\frac{1}{n}\underbrace{\sum_{k=1}^n\binom{n}{k}\cdot(-1)^k}_{\text{binomial
+  distribution}} \\
+&=a_{n-1}+\frac{1}{n}
+\end{align*}
+Then we know that:\\
+\[
+a_n = \sum_{k=1}^{n-1}b_k+b_n\qquad b_n = \frac{1}{n}
+\]
+Then we get $a_n=H_n$.\\
+ \\
+Compositions\\
+Look at the following problem:\\
+\[
+n=a_1+a_2+...+a_k\qquad a_k\geq 0,a_k\in N,n\in N
+\]
+In how many ways can we obtain an exact above equation?\\
+We define $C_{n,k}$ as the number of ways obtaining the above equation
+using k numbers.\\
+Let's reformulate the above problem. It is same as the problem that we
+have $n$ $1s$, using bars to partition the $1s$ into $k$
+segements. Obviously $k-1$ bars are needed. \\
+Let's reformulate this problem again, it can be represented as we have
+$n+k-1$ element, choosing  $k-1$ to change to bars.\\
+Then we have:\\
+I can't remember detail of the following  part\\
+----------------------------------------------------------------------------------------\\
+\begin{align*}
+C_{n.k}&=\sum_{i=0}^nC_{n-i,k-1}\\
+&=\sum_{j=0}^nC_{j,k-1}\\
+&=\sum_{j=0}^{n-1}C_{j,k-1}+C_{n,k-1}\\
+&=C_{n-1,k-1}+C_{n,k-1}
+\end{align*}
+\begin{align*}
+C_{n,k}^{(1)}&\overset{?}{=}\binom{n+k}{n}\overset{!}{=}\binom{n+k}{k}\\
+C_{n,k}^{(2)}&\overset{?}{=}\binom{n+k-1}{k-1}=\binom{n+k-3}{k-2}+\binom{n+k-2}{k-2}
+\end{align*}
+-------------------------------------------------------------------------------------------\\
+General Solution of Recurrence\\
+May contain parameters, that can be used to fit initial values.\\
+$x_n^{(P)}$ - Particular Solution pays no attention to initial values\\
+$x_n^{(0)}$ - Homogeneous Recurrence Replaces $b_n$ by $0$.
+\begin{gsr}
+The general solution of a recurrence can be written as the sum of a
+general solution of the homogeneous recurrence and a particular
+solution of the fully recurrence.(Init values may not be satisfied),
+which can be formulated as the following representation:\\
+\[
+x_n=x_n^{(0)}+x_n^{(P)}
+\]
+\end{gsr}
+Example:\\
+\[
+x_{n+1}=2x_n+1\qquad n\geq0,x_0=2
+\]
+Hom.:\\
+\[
+x_{n+1}=2x_n=A\cdot 2^n
+\]
+Par.:(Simply letting $x_{n+1}=x_n$)\\
+\[
+x_n=-1
+\]
+Then:\\
+\begin{align*}
+x_n&=A\cdot 2^n-1\\
+2&=A\cdot 2^0-1\\
+A&=3
+\end{align*}
+Hence:\\
+\[
+x_n=3\cdot 2^n-1
+\]
+A more complicated example:\\
+we have $n$ coins, define a independent random variable \\
+\[
+C_i=\twopartdef{H}{\text{with prob }\frac{1}{2i+1}}{T}{\text{with prob }1-\frac{1}{2i+1}=\frac{2i}{2i+1}}
+\]
+and \\
+\begin{center}
+$A_n$={tosses of all $n$ coins giving an odd number of $Hs$}\\
+\end{center}
+\begin{align*}
+P(A_n)&=P_n \\
+&=Pr(C_n(H))\cdot (1-P_{n-1})+Pr(C_n(T))\cdot P_{n-1}\\
+&=\frac{1}{2n+1}(1-P_{n-1}+\frac{2n}{2n+1}P_{n-1}\\
+&=P_{n-1}(\frac{2n}{2n+1}-\frac{1}{2n+1})+\frac{1}{2n+1} \qquad n\geq 1,P_0=0 
+\end{align*}
+Hom.:\\
+\[
+P_n^{(0)}=\frac{2n-1}{2n+1}P_{n-1}^{(0)}=\frac{3}{2n+1}k
+\]
+Par.:\\
+\[
+g=g\frac{2n-1}{2n+1}+\frac{1}{2n+1} \\
+g=\frac{1}{2}
+\]
+Hence:\\
+\begin{align*}
+P_n&=\frac{3k}{2n+1}+\frac{1}{2} \\
+P_0&=\frac{3k}{1}+\frac{1}{2}=0\\
+k&=\frac{1}{6} \\
+P_n&=\frac{1}{2}-\frac{1}{4n+2} \\
+&=\frac{1}{2}(1-\frac{1}{2n+1}) \\
+&=\frac{n}{2n+1}
+\end{align*}
+
+\end{document}
+
+%%% Local Variables: 
+%%% mode: latex
+%%% TeX-master: t
+%%% End: 
