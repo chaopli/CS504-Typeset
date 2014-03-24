@@ -1,28 +1,57 @@
-\message{ !name(recurrence.tex)}\documentclass{article}
+\message{ !name(20140320.tex)}\documentclass{article}
 \usepackage{amsmath}
-\title{Recurrence}
 \author{Prof. Micha Hofri}
-\newtheorem{gsr}{Theorem}
-\newcommand{\twopartdef}[4]
-{
-  \left\{
-  \begin{array}{ll}
-    #1 & \mbox{if } #2 \\
-    #3 & \mbox{if } #4
-  \end{array}
-  \right.
-}
+\title{CS504 20140320 notes}
 \begin{document}
 
-\message{ !name(recurrence.tex) !offset(141) }
-\begin{center}
-\twopartdef{H}{with prob $\frac{1}{2i+1}$}{T}{with prob$1-\frac{1}{2i+1}=\frac{2i}{2i+1}$}
-\end{center}
-\message{ !name(recurrence.tex) !offset(139) }
+\message{ !name(20140320.tex) !offset(-3) }
 
+\maketitle
+\begin{description}
+\item[Singletons, Matches, Coincidences] Refer to items in the
+  permutation which are in their original position. Actually, the term
+  \textbf{Singletons, Matches,} and \textbf{Coincidences} are
+  short for "\emph{Cycle} of a single item."
+\item[Permutation Cycle] is a subset of a permutation whose elements
+  trade places with one another. For example, in the permutation group
+  $\{4,2,1,3\}$. $(143)$ is a 3-cycle and $(2)$ is a 1-cycle. Hence in
+  the above definition, we only concern 1-cycle.
+\item[$D_n$] number of singletons in a permutation from $S_n$.
+\item[$d_{n,k}$] number of permutations in $S_n$ where $D_n=k$.
+\item[$\overline{D_n}$] $d_{n,0}$, means the permutation is fully deranged.
+\end{description}
+Then from the above definitions, obviously, we have \\
+\[
+d_{n,k}=\binom{n}{k}\cdot\overline{D_{n-k}}
+\]
+which means we choose $k$ positions for fixed  singletons, and the
+other $n-k$ positions are all derangements.\\
+We have recurrence
+\[
+\overline{D_n}=(n-1)(\overline{D_{n-1}}+\overline{D_{n-2}})\qquad
+n\geq 2, D_0=1,D_1=0
+\]
+Then we have
+\[
+\overline{D_{n+2}}=(n+1)(\overline{D_{n+1}}+D_n)\qquad n\geq 0
+\]
+The Exponential Generating Function of $D_n$ is
+\[
+\hat{D}(x)=\sum_{n\geq 0}D_n\frac{X^n}{n!}
+\]
+Then we have\\
+\begin{align*}
+\hat{D}''(x)&=(x\hat{D}'(x))'+x\hat{D}'(x)+\hat{D}(x)\\
+&=x\hat{D}''(x)+D'(x)+x\hat{D}'(x)+\hat{D}(x)\\
+\hat{D}''(x)(1-x)&=\hat{D}(x)+(1+x)\hat{D}'(1+x)\\
+\left((1-x)\hat{D}(x)\right)''&=(-\hat{D}(x)+(1-x)\hat{D}'(x))'\\
+&=-\hat{D}'(x)+(-\hat{D}'(x)+(1-x)\hat{D}''(x))
+
+\end{align*}
 \end{document}
-
 %%% Local Variables: 
 %%% mode: latex
 %%% TeX-master: t
 %%% End: 
+
+\message{ !name(20140320.tex) !offset(-57) }

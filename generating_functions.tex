@@ -1,0 +1,31 @@
+\documentclass{article}
+\author{Prof. Micha Hofri}
+\title{Generating Functions}
+\usepackage{amsmath}
+\begin{document}
+\maketitle
+\begin{description}
+\item[Definition] \hfill \\
+Assume we have a number serie \(\{a_n\}_{n\geq 0}\), then its ordinary
+generating function is \(a(x)=\sum_{n\geq 0}a_nx^n\); its exponential
+generating function is \(\hat{a}(x)=\sum_{n\geq 0}a_n\frac{x^n}{n!}\).
+\end{description}
+Now let's look at a simple example: let \(n_n=a_{n+1}, n\geq 0\),
+first on the OGF, then \\
+\[
+b(x)=\sum_{n\geq 0}b_nx^n=\frac{1}{x}\sum_{n\geq 0}a_{n+1}x^{n+1} =\frac{a(x)-a_0}{x}
+\]
+Next on the EGF, then\\
+\begin{align*}
+\hat{b}(x)&=\sum_nb_n\frac{x^n}{n!} \\
+&=\sum_{n\geq 0}a_{n+1}\frac{x^n}{n!} \\
+&=\sum_{n\geq 1}a_{n+1}\frac{(n+1)x^{n+1}}{x(n+1)!} \\
+&=\sum_{n\geq 1}a_{n+1}\frac{(x^{n+1})'}{(n+1)!} \\
+&=D_x\sum_{n\geq 0}a_{n+1}\frac{x^{n+1}}{(n+1)!}
+\end{align*}
+\section*{Convolution}
+\end{document}
+%%% Local Variables: 
+%%% mode: latex
+%%% TeX-master: t
+%%% End: 

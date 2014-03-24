@@ -1,0 +1,128 @@
+\documentclass{article}
+\usepackage{amsmath}
+\author{Prof. Micha Hofri}
+\title{CS504 20140320 notes}
+\newcommand{\twopartdef}[4]
+{
+  \left\{
+    \begin{array}{ll}
+      #1 & \mbox{if } #2 \\
+      #3 & \mbox{} #4 
+    \end{array}
+  \right.
+}
+\begin{document}
+\maketitle
+\section{1}
+First let's look at some definitions:\\
+\begin{description}
+\item[Singletons, Matches, Coincidences] Refer to items in the
+  permutation which are in their original position. Actually, the term
+  \textbf{Singletons, Matches,} and \textbf{Coincidences} are
+  short for "\emph{Cycle} of a single item."
+\item[Permutation Cycle] is a subset of a permutation whose elements
+  trade places with one another. For example, in the permutation group
+  $\{4,2,1,3\}$. $(143)$ is a 3-cycle and $(2)$ is a 1-cycle. Hence in
+  the above definition, we only concern 1-cycle.
+\item[$D_n$] -number of singletons in a permutation from $S_n$.
+\item[$d_{n,k}$] -number of permutations in $S_n$ where $D_n=k$.
+\item[$\overline{D_n}$] -$d_{n,0}$, means the permutation is fully deranged.
+\end{description}
+Then from the above definitions, obviously, we have \\
+\[
+d_{n,k}=\binom{n}{k}\cdot\overline{D_{n-k}}
+\]
+which means we choose $k$ positions for fixed  singletons, and the
+other $n-k$ positions are all derangements.\\
+We have recurrence
+\[
+\overline{D_n}=(n-1)(\overline{D_{n-1}}+\overline{D_{n-2}})\qquad
+n\geq 2, D_0=1,D_1=0
+\]
+Then we have
+\[
+\overline{D_{n+2}}=(n+1)(\overline{D_{n+1}}+\overline{D_n})\qquad n\geq 0
+\]
+The Exponential Generating Function of $\overline{D_n}$ is
+\[
+\hat{D}(x)=\sum_{n\geq 0}\overline{D_n}\frac{X^n}{n!}
+\]
+Then we have\\
+\begin{align*}
+  \hat{D}''(x)&=\left(x\hat{D}'(x)\right)'+x\hat{D}'(x)+\hat{D}(x)\\
+  &=x\hat{D}''(x)+D'(x)+x\hat{D}'(x)+\hat{D}(x)\\
+  \hat{D}''(x)(1-x)&=\hat{D}(x)+(1+x)\hat{D}'(1+x)\\
+  \left((1-x)\hat{D}(x)\right)''&=(-\hat{D}(x)+(1-x)\hat{D}'(x))'\\
+  &=-\hat{D}'(x)+(-\hat{D}'(x)+(1-x)\hat{D}''(x))\\
+  \left((1-x)\hat{D}(x)\right)''&=\hat{D}(x)+(1+x)\hat{D}'(x)
+\end{align*}
+Let $f(x)=(1-x)\hat{D}(x)$, then we have\\
+\begin{align*}
+  f''(x)&=-f'(x)\\
+  \frac{f''}{f'}&=-1\\
+  lnf'&=c-x\\
+  f'&=e^{c-x}=ke^{-x}\\
+  f(x)&=k_1+k_2e^{-x}
+\end{align*}
+Hence\\
+\begin{align*}
+  \hat{D}(x)=\frac{k_1+k_2e^{-x}}{1-x}\xrightarrow{D_0=1}k_1+k_2=1 \\
+  D_1=\hat{D}'(0)\xrightarrow{D_1=0} 
+  \left.\frac{(-k_2e^{-x}(1-x)+(k_1+k_2e^{-x})}{1}\right|_{x=0} 
+\end{align*}
+Then we get \(k_1=0, k_2=1\), then
+\begin{align*}
+  \hat{D}(x)=\frac{e^{-x}}{1-x}=\sum_{r\geq 0}\frac{(-x)^r}{r!} \\
+  D_n=n!\sum_{k\geq 0}\frac{(-1)^k}{k!}\approx \frac{n!}{e}
+\end{align*}
+which is called \textbf{Incomplete Exponential Funcion}\\
+Next define \\
+\[m_j=\twopartdef{1}{j\text{ is in position }j}{0}{\text{o.w.}}\]
+Then we have
+\[E(M_n)=E\left(\sum_{j=1}^nm_j\right)=\sum_{j=1}^n\underbrace{E(m_j)}_{\frac{1}{n}}=1\]
+\section{2}
+Assume we have two number series \(\{f_k\}_{k\geq 0},\{g_n\}_{n\geq 0}\),
+and we have the relation between the two series
+\[
+g_n=\sum_k\binom{n}{k}f_k
+\]
+so, the generating function of \(g_n\) is
+\begin{align*}
+  g(x)&=\sum_ng_nx^n \\
+  &=\sum_nx^n\sum_k\binom{n}{k}f_k \\
+  &=\sum_kf_k\sum_{n\geq 0}\binom{n}{k}x^n \\
+  &=\sum_kf_k\frac{x^k}{(1-x)^{k+1}} \\
+  &=\frac{1}{1-x}\underbrace{\sum_kf_k\left(\frac{x}{1-x}\right)^k}_{f\left(\frac{x}{1-x}\right)} \\
+  g(x)&=\frac{1}{1-x}f\left(\frac{x}{1-x}\right) \\
+\end{align*}
+then let \(t=\frac{x}{1-x}\), we get \\
+\begin{align*}
+  x&=t(1-x) \\
+  x&=\frac{t}{1+x}\\
+  \frac{1}{1-x}&=1+t\\
+  g\left(\frac{t}{1+t}\right)&=(1+t)f(t)
+\end{align*}
+Now we have\\
+\begin{align*}
+  f_n&=[t^n]f(t) \\
+  &=[t^n]\frac{1}{1+t}\sum_{k\geq 0}g_k\frac{t^k}{(1+t)^k} \\
+  &=\sum_{k\geq 0}g_k[t^n]\frac{t^k}{(1+t)^{k+1}} \\
+  &=\sum_{k\geq 0}g_k[t^{n-k}](1+t)^{-(k+1)}
+\end{align*}
+As \(\binom{-k-1}{n-k}=\binom{k+1+n-k-1}{n-k}(-1)^{n-k}\) then \\
+\[
+f_n=\sum_{k\geq 0}g_k(-1)^{n-k}\binom{n}{k}
+\]
+As we have known \(d_{n,k}=\binom{n}{k}D_{n-k}\), so \\
+\begin{align*}
+\underbrace{\sum_{k=0}^nd_{n,k}}_{n!}&=\sum_{k=0}^n\underbrace{\binom{n}{k}}_{n-j}\underbrace{D_{n-k}}_j
+\\
+&=\sum_{j=0}^n\binom{n}{j}D_j \\
+D_k&=\sum_j\binom{k}{j}j!(-1)^{k-j} \\
+\frac{D_k}{k!}&=\sum_{j=0}^k\frac{(-1)^{k-j}}{(k-j)!}=\sum_{r=0}^k\frac{(-1)^r}{r!}
+\end{align*}
+\end{document}
+%%% Local Variables: 
+%%% mode: latex
+%%% TeX-master: t
+%%% End: 
