@@ -1,0 +1,71 @@
+\documentclass[a4paper]{article}
+
+\usepackage[english]{babel}
+\usepackage[utf8]{inputenc}
+\usepackage{amsmath}
+\usepackage{graphicx}
+\usepackage[colorinlistoftodos]{todonotes}
+
+\title{CS504 20140324 notes}
+\author{Prof. Micha Hofri}
+
+\date{}
+
+\begin{document}
+\maketitle
+
+\section{Asymptotic Analysis}
+
+\subsection{Types}
+\begin{enumerate}
+\item logorithmic 
+\item polynomial: $n^a (a>0) $ $a$ has not to be integer
+\item exponential: $b^n (b>1)$ 
+\item super-exponential $ $
+\end{enumerate}
+
+\subsection{}
+
+\[ f_n = \frac{2}{n+2} = \frac{n+2-2}{n+2} = 1 - \frac{2}{n+2} = 1+ O(\frac{1}{n}) \]
+
+\subsection{}
+\[ n^a \in O(n^b) \rightarrow 0<a<b \]
+
+$ C_n = \frac{n^a}{n^b} = \frac{1}{n^{b-a}}$, $C_n$ converges to $0$ when $b>a$ as $n$ increses.
+
+\[a^n \in O(b^n) \rightarrow 1<a<b \]
+
+$ C_n = \frac{a^n}{b^n} = (\frac{a}{b})^n$, $C_n$ decreases as $n$ increses when $b>a>1$.
+
+\subsection{}
+
+\[ C_n = \frac{n^a}{b^n} \xrightarrow{  ?  } 0 \]
+$\frac{C_{n+1}}{C_n} = \frac{(n+1)^a}{n^a} \cdot \frac{b^n}{b^{n+1}} = (1+\frac1n)^a \frac1b$, if we want $\frac{C_{n+1}}{C_n} < 1$:
+\\
+\\
+$(1+\frac1n) < b \rightarrow log(1+\frac1n) < \frac{logb}{a} \rightarrow \frac1n < \frac{logb}{a} $ \\
+\\
+Thus, when $n>\frac{a}{logb}$, we have $C_n \longrightarrow 0$
+
+
+\section{Asymptotic Manipulations}
+
+\subsection{Asymptotic scale}
+
+Assume we have serires: $g_0(n), g_1(n), g_2(n) ...$, and we know $g_i(n) \in \Omega [g_{i+1}(n)]$ 
+\\
+define $f_n = \sum_{i=0}^k g_i{n} + O(g_{k+1}^n)$\, which is \textit{Poincaré series}.
+\\
+\\
+$f(r) = f_0 + f_1r + f_2r^2 ...$, which coverges in some $ r<A (A>1)$.Thus,
+
+\begin{align*}
+f(r)  &= \underbrace{f_0 + f_1r + ... +f_kr^k }_{\sum_{k\geq0} k!}+ r^{k+1}(\underbrace{f_{k+1}+ f_{k+2} + ....}_{\mbox{finite value}}) \\
+      &= f_0 + f_1r + ... + f_kr^k + O(r^{k+1})
+\end{align*}
+
+\subsection{}
+\[ f(n) = n^{\frac{a}{n}} \]
+
+\end{document}
+
