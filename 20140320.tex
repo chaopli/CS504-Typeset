@@ -1,7 +1,46 @@
-\documentclass{article}
-\usepackage{amsmath}
-\author{Prof. Micha Hofri}
-\title{CS504 20140320 notes}
+\documentclass[11pt]{article}
+\usepackage{times,mathptmx}
+\usepackage{amsmath,amsthm,amssymb}
+\usepackage{xspace}
+\newcommand{\DS}{\displaystyle}
+\newcommand{\pmfa}{{\sc pmf}\xspace}
+\newcommand{\pmf}{ probability mass function\xspace}
+\newcommand{\pgfa}{{\sc pgf}\xspace}
+\newcommand{\pgf}{ probability generating function\xspace}
+\newcommand{\ogfa}{{\sc ogf}\xspace}
+\newcommand{\ogf}{ ordinary generating function\xspace}
+\newcommand{\egfa}{{\sc egf}\xspace}
+\newcommand{\mgf}{ moment generating function\xspace}
+\newcommand{\egf}{ exponential generating function\xspace}
+\newcommand{\pdf}{ probability density function\xspace}
+\newcommand{\gf}{generating function\xspace}
+\newcommand{\gfa}{{\sc gf}\xspace}
+\newcommand{\bc}{binomial coefficient\xspace}
+\newcommand{\pfd}{ partial fraction decomposition\xspace}
+\newcommand{\lhs}{left-hand side\xspace}
+\newcommand{\rhs}{right-hand side\xspace}
+\newcommand{\lf}{\lfloor}
+\newcommand{\rf}{\rfloor}
+\newcommand{\lc}{\lceil}
+\newcommand{\rc}{\rceil}
+\newcommand{\lp}{\left(}
+\newcommand{\rp}{\right)}
+\newcommand{\lbr}{\left[}
+\newcommand{\rbr}{\right]}
+\newcommand{\ul}{\underline}
+\newcommand{\ovl}{\overline}
+\newcommand{\cA}{{\mathcal A}} \newcommand{\cB}{{\mathcal B}}
+\newcommand{\cC}{{\mathcal C}} \newcommand{\cD}{{\mathcal D}}
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{1ex}
+\newtheorem{DEFINITION}{Definition}
+\newenvironment{df}{\begin{DEFINITION} \hspace{.30em}  \rm}%
+          {\hfill\protect$\lhd$\end{DEFINITION}}
+\newtheorem{EXAMPLE}{Example}
+\newenvironment{example}{\begin{EXAMPLE} \hspace{.30em} \rm}%
+                      {\end{EXAMPLE}}
+\author{Prof. Micha Hofri/Typeset:  Chao Li, Xinyue Liu}
+\title{CS504 3/20/2014 notes}
 \newcommand{\twopartdef}[4]
 {
   \left\{
@@ -13,96 +52,147 @@
 }
 \begin{document}
 \maketitle
-\section{1}
-First let's look at some definitions:\\
-\begin{description}
-\item[Singletons, Matches, Coincidences] Refer to items in the
-  permutation which are in their original position. Actually, the term
-  \textbf{Singletons, Matches,} and \textbf{Coincidences} are
-  short for "\emph{Cycle} of a single item."
-\item[Permutation Cycle] is a subset of a permutation whose elements
-  trade places with one another. For example, in the permutation group
-  $\{4,2,1,3\}$. $(143)$ is a 3-cycle and $(2)$ is a 1-cycle. Hence in
-  the above definition, we only concern 1-cycle.
-\item[$D_n$] -number of singletons in a permutation from $S_n$.
-\item[$d_{n,k}$] -number of permutations in $S_n$ where $D_n=k$.
-\item[$\overline{D_n}$] -$d_{n,0}$, means the permutation is fully deranged.
-\end{description}
-Then from the above definitions, obviously, we have \\
+\section{On derangements and singletons in permutations}
+First let us look at some definitions:\\
+\begin{df}
+A {\bf cycle} of size $k$ in a permutation of $[n]$, the first $n$ natural
+numbers, is a sequence of $k$ elements $(a_1, a_2, \dots, a_k)$ which are 
+in positions $(a_2, a_3, \dots, a_k, a_1)$.
+
+{\bf Singletons, Matches, Coincidences} are to items in a
+permutation which are in their original positions. The term
+singletons is short for a cycle of a single item, or of length one.
+
+{\bf Derangement} is a permutation which has no matches.
+
+$D_n$ is the number of derangements in $S_n$, the set of all permutations
+of $[n]$ (also called the {\bf symmetric group}).
+
+$d_{n,k}$ -- the number of permutations in $S_n$ where $D_n=k$.
+% \item[$\overline{D_n}$] -$d_{n,0}$, means the permutation is fully deranged.
+\end{df}
+\begin{example}\label{Mp4.1}
+In the permutation
+$\{4,2,1,3\}$. $(1,3,4)$ is a 3-cycle and $(2)$ is a 1-cycle. Hence
+this permutation is among the $d_{4,1}$ such permutations in $S_4$.  How
+many such permutations exist? We shall answer it below.
+\end{example}
+From the above definitions we have
 \[
-d_{n,k}=\binom{n}{k}\cdot\overline{D_{n-k}}
+d_{n,k}=\binom{n}{k}\,D_{n-k},
 \]
-which means we choose $k$ positions for fixed  singletons, and the
-other $n-k$ positions are all derangements.\\
-We have recurrence
+which means that once  we choose $k$ positions for singletons, which we
+can do in $\binom nk$ ways, we have $D_{n-k}$ ways to arrange entries in
+the 
+other $n-k$ positions, so that they are all `deranged.'\\
+We have a couple of ways to approach the calculation of the number of
+derangements, and we do it via the following recurrence, due to L.~Euler:
 \[
-\overline{D_n}=(n-1)(\overline{D_{n-1}}+\overline{D_{n-2}})\qquad
-n\geq 2, D_0=1,D_1=0
+D_n=(n-1)(D_{n-1}+D_{n-2}), \qquad n\geq 2,~ D_0=1,~D_1=0
 \]
-Then we have
+{\em Query:\ } Can you explain the reasons for the two initial values?
+
+The intent is to solve the recurrence  using the \egfa, and we then shift the
+indices in the recurrence, so they cover the entire range of definition of
+the sequence, and find
 \[
-\overline{D_{n+2}}=(n+1)(\overline{D_{n+1}}+\overline{D_n})\qquad n\geq 0
+D_{n+2}=(n+1)(D_{n+1}+D_{n}), \qquad n\ge 0,~ D_0=1,~D_1=0
 \]
-The Exponential Generating Function of $\overline{D_n}$ is
+The \egfa of $D_n$ is
 \[
-\hat{D}(x)=\sum_{n\geq 0}\overline{D_n}\frac{X^n}{n!}
+\hat{D}(x)=\sum_{n\ge 0}D_n\,\frac{x^n}{n!}.
 \]
-Then we have\\
+We shall use the standard transformation rules for \egfa{s}, where
+we use the notation $\cD_x$ (or for brevity, just $\cD$) for the
+differentiation operator with respect to $x$:\\
+$a_{n+k} \mapsto \cD^k\hat a(x)$, and
+$n^k a_{n} \mapsto (x\cD)^k\hat a(x)$,\\
+which also gives $(n+1) a_{n+1} \mapsto \cD x\cD\hat a(x)$.\\
+Then, 
 \begin{align*}
-  \hat{D}''(x)&=\left(x\hat{D}'(x)\right)'+x\hat{D}'(x)+\hat{D}(x)\\
-  &=x\hat{D}''(x)+D'(x)+x\hat{D}'(x)+\hat{D}(x)\\
-  \hat{D}''(x)(1-x)&=\hat{D}(x)+(1+x)\hat{D}'(1+x)\\
-  \left((1-x)\hat{D}(x)\right)''&=(-\hat{D}(x)+(1-x)\hat{D}'(x))'\\
-  &=-\hat{D}'(x)+(-\hat{D}'(x)+(1-x)\hat{D}''(x))\\
-  \left((1-x)\hat{D}(x)\right)''&=\hat{D}(x)+(1+x)\hat{D}'(x)
+\hat{D}''(x)&=\left(x\hat{D}'(x)\right)'+x\hat{D}'(x)+\hat{D}(x)\\
+&=x\hat{D}''(x)+D'(x)+x\hat{D}'(x)+\hat{D}(x).\quad \text{Collecting }
+\hat D''(x),\\
+\hat{D}''(x)(1-x)&=\hat{D}(x)+(1+x)\hat{D}'(x).
 \end{align*}
-Let $f(x)=(1-x)\hat{D}(x)$, then we have\\
+Observe that $((1-x)\hat D(x))'' = (1-x)\hat D''(x) -2\hat D'(x)$, and use
+it to rewrite the last \lhs in the equation above, so that we find
+\[
+\left((1-x)\hat{D}(x)\right)'' +2\hat D'(x) =\hat{D}(x)+(1+x)\hat{D}'(x),
+\]
+and rearranging,
 \begin{align*}
-  f''(x)&=-f'(x)\\
-  \frac{f''}{f'}&=-1\\
-  lnf'&=c-x\\
-  f'&=e^{c-x}=ke^{-x}\\
-  f(x)&=k_1+k_2e^{-x}
+\left((1-x)\hat{D}(x)\right)'' &= \hat{D}(x)+(x-1)\hat{D}'(x))
+= \left((x-1)\hat{D}(x)\right)'\\
+& =-\left((1-x)\hat{D}(x)\right)'
 \end{align*}
-Hence\\
+Let $f(x)=(1-x)\hat{D}(x)$, then we have
 \begin{align*}
-  \hat{D}(x)=\frac{k_1+k_2e^{-x}}{1-x}\xrightarrow{D_0=1}k_1+k_2=1 \\
+f''(x)&=-f'(x) \implies \frac{f''}{f'}=-1, \qquad \text{A logarithmic
+derivative}\\
+\ln f'&=c-x~ \text{which leads to}~ f'=e^{c-x}=ke^{-x}\\
+  f(x)&=k_1+k_2e^{-x} \qquad \text{A second integration adds a constant}
+\end{align*}
+\begin{align*}
+\text{Hence}\quad
+  \hat{D}(x)=\frac{k_1+k_2e^{-x}}{1-x}, \xrightarrow{D_0=1}k_1+k_2=1 \\
   D_1=\hat{D}'(0)\xrightarrow{D_1=0} 
   \left.\frac{(-k_2e^{-x}(1-x)+(k_1+k_2e^{-x})}{1}\right|_{x=0} 
 \end{align*}
-Then we get \(k_1=0, k_2=1\), then
+Then we get \(k_1=0, k_2=1\), then we know that
+$\hat{D}(x)=\frac{e^{-x}}{1-x}$.  The expansion of the exponential
+function is $e^{-x} =\sum_{r\geq 0}\frac{(-x)^r}{r!}$, and having it
+divided by $(1-x)$ means that $[x^n]\hat D(x)$ is the $n$-prefix of this
+expansion, that is
 \begin{align*}
-  \hat{D}(x)=\frac{e^{-x}}{1-x}=\sum_{r\geq 0}\frac{(-x)^r}{r!} \\
-  D_n=n!\sum_{k\geq 0}\frac{(-1)^k}{k!}\approx \frac{n!}{e}
+  D_n=n!\sum_{k=0}^n\frac{(-1)^k}{k!} = n!e_n(-x) \approx \frac{n!}{e}
 \end{align*}
-which is called \textbf{Incomplete Exponential Funcion}\\
-Next define \\
-\[m_j=\twopartdef{1}{j\text{ is in position }j}{0}{\text{o.w.}}\]
-Then we have
-\[E(M_n)=E\left(\sum_{j=1}^nm_j\right)=\sum_{j=1}^n\underbrace{E(m_j)}_{\frac{1}{n}}=1\]
-\section{2}
-Assume we have two number series \(\{f_k\}_{k\geq 0},\{g_n\}_{n\geq 0}\),
-and we have the relation between the two series
+The expression $e_n(-x)$ is called \textbf{Incomplete Exponential
+Function}.
+
+Next define $M_n$ as the number of matches in a permutation of size $n$.
+We now know its distribution:
 \[
-g_n=\sum_k\binom{n}{k}f_k
+Pr[M_n=k] = \frac{d_{n,k}}{n!}.
 \]
-so, the generating function of \(g_n\) is
+While this allows us to calculate, for example, all moments of $M_n$, the
+first moments is much easier to compute, as is often the case by using
+indicator random variables.  Let
+\[
+Y_j=\twopartdef{1}{j\text{ is in position }j}{0}{\text{o.w.}}
+\]
+Then we have   $M_n =\sum_{j=1}^n Y_j.$
+Now observe that the entry $j$ in the permutation is equally likely to be
+in any of the $n$ positions, and in particular, also in its native
+position, $j$. 
+Therefore
+\[
+E(M_n)=E\left(\sum_{j=1}^nY_j\right)=
+\sum_{j=1}^n\underbrace{E(Y_j)}_{\DS\frac{1}{n}}=1.
+\]
+\subsection{Solving for $\hat D(x)$ with an inverse relation}
+Assume we have two number sequences $\{f_k\}_{k\geq 0}$ and, $\{g_n\}_{n\geq
+0}$; we also know the following relation between the two sequences
+\[
+g_n=\sum_k\binom{n}{k}f_k.
+\]
+Compute the generating function of \(g_n\)
 \begin{align*}
-  g(x)&=\sum_ng_nx^n \\
+g(x)&=\sum_ng_nx^n \\
   &=\sum_nx^n\sum_k\binom{n}{k}f_k \\
   &=\sum_kf_k\sum_{n\geq 0}\binom{n}{k}x^n \\
   &=\sum_kf_k\frac{x^k}{(1-x)^{k+1}} \\
-  &=\frac{1}{1-x}\underbrace{\sum_kf_k\left(\frac{x}{1-x}\right)^k}_{f\left(\frac{x}{1-x}\right)} \\
+ &=\frac{1}{1-x}\sum_kf_k\left(\frac{x}{1-x}\right)^k\\
   g(x)&=\frac{1}{1-x}f\left(\frac{x}{1-x}\right) \\
 \end{align*}
-then let \(t=\frac{x}{1-x}\), we get \\
+then let \(t=\frac{x}{1-x}\), and solve for $x$:
 \begin{align*}
   x&=t(1-x) \\
   x&=\frac{t}{1+x}\\
-  \frac{1}{1-x}&=1+t\\
-  g\left(\frac{t}{1+t}\right)&=(1+t)f(t)
+\text{also}\quad  \frac{1}{1-x}&=1+t\\
+  g\left(\frac{t}{1+t}\right)&=(1+t)f(t).
 \end{align*}
-Now we have\\
+Now we have
 \begin{align*}
   f_n&=[t^n]f(t) \\
   &=[t^n]\frac{1}{1+t}\sum_{k\geq 0}g_k\frac{t^k}{(1+t)^k} \\
@@ -111,15 +201,19 @@ Now we have\\
 \end{align*}
 As \(\binom{-k-1}{n-k}=\binom{k+1+n-k-1}{n-k}(-1)^{n-k}\) then \\
 \[
-f_n=\sum_{k\geq 0}g_k(-1)^{n-k}\binom{n}{k}
+f_n=\sum_{k\geq 0}g_k(-1)^{n-k}\binom{n}{k}.
 \]
-As we have known \(d_{n,k}=\binom{n}{k}D_{n-k}\), so \\
+As we know, \(d_{n,k}=\binom{n}{k}D_{n-k}\), so
 \begin{align*}
-\underbrace{\sum_{k=0}^nd_{n,k}}_{n!}&=\sum_{k=0}^n\underbrace{\binom{n}{k}}_{n-j}\underbrace{D_{n-k}}_j
-\\
-&=\sum_{j=0}^n\binom{n}{j}D_j \\
-D_k&=\sum_j\binom{k}{j}j!(-1)^{k-j} \\
-\frac{D_k}{k!}&=\sum_{j=0}^k\frac{(-1)^{k-j}}{(k-j)!}=\sum_{r=0}^k\frac{(-1)^r}{r!}
+n! = \sum_{k=0}^nd_{n,k} =\sum_{k=0}^n\binom{n}{k}D_{n-k} \quad
+\xrightarrow{j \equiv n-k} \quad =\sum_{j=0}^n\binom{n}{j}D_j.
+\end{align*}
+Using the inverse relation we proved above, we can now express the
+sequence $\{D_n\}$ in terms of the factorials:
+\begin{align*}
+D_k&=\sum_j\binom{k}{j}j!(-1)^{k-j}, ~\text{and} \\
+\frac{D_k}{k!}
+&=\sum_{j=0}^k\frac{(-1)^{k-j}}{ (k-j)!}=\sum_{r=0}^k\frac{(-1)^r}{r!}.
 \end{align*}
 \end{document}
 %%% Local Variables: 

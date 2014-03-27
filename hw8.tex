@@ -8,10 +8,10 @@
 \item \hfill\\
 Let \(p_r=Pr\{X=r\}=pq^{r-1}\), then
 \begin{align*}
-  P(u)&=\sum_{r\geq 0}p_ru^r \\
-  &=\sum_{r\geq 0}pq^{r-1}u^r \\
-  &=\frac{p}{q}\sum_{r\geq 0}q^ru^r \\
-  &=\frac{p}{q}\frac{1}{1-qu} \\
+  P(u)&=\sum_{r\geq 1}p_ru^r \\
+  &=\sum_{r\geq 1}pq^{r-1}u^{r-1} \\
+  &=up\sum_{r\geq 1}q^{r-1}u^{r-1} \\
+  &=\frac{up}{1-uq} \\
 \end{align*}
 As the definition \\
 \[
@@ -20,8 +20,52 @@ E[X^n]=\sum_{r\geq 0}p_rr^n
 is the n-th moment of the origin, so the 1st moment is \(n=1\) and the
 2nd moment is \(n=2\), so
 \begin{align*}
-E[X^1]&=\sum_{r\geq 0}p_rr
-&=
+E[X^1]&=\sum_{r\geq 0}p_rr=P'(1)\\
+&=\frac{p}{(1-q)^2} \\
+&=\frac{1}{p}
+\end{align*}
+\begin{align*}
+E[X^2]&=P''(1) \\
+&=\frac{-2(1-q)(-q)p}{(1-q)^4} \\
+&=\frac{2pq}{(1-q)^3} \\
+&=\frac{2q}{p^2}
+\end{align*}
+Finally,
+\begin{align*}
+V(X)&=E[X^2]+E[X]-E^2[X] \\
+&=\frac{2q}{p^2}+\frac{1}{p}-\frac{1}{p^2} \\
+&=\frac{2q+p-1}{p^2}
+\end{align*}
+\item \hfill\\
+a. \\
+As we know that \(P[x>k]=1-P[x\leq k]\), then
+\begin{align*}
+P[x>0]z^0&=z^0(1-P_0) \\
+P[x>1]z^1&=z^1(1-p_0-p_1) \\
+P[x>2]z^2&=z^2(1-p_0-p_1-p_2) \\
+P[x>k]z^k&=z^k(1-\sum_{i=0}^{k}p_k) 
+\end{align*}
+Sum up the above equations, we get
+\begin{align*}
+\sum_{k\geq 0}P[x>k]z^k&=\sum_{i\geq 0}z^i-P_0\sum_{i\geq 0}z^i-P_1\sum_{i\geq 1}z^i-...-P_i\sum_{i\geq k}z^i \\
+&=(\sum_{k\geq 0}z^k)(1-p_0-p_1z-p_2z^2-p_kz^k) \\
+&=\frac{1}{1-z}(1-\sum_{k\geq 0}P_kz^k) \\
+&=\frac{1-p(z)}{1-z}
+\end{align*}
+b. \\
+The same as problem 2.a, we have
+\begin{align*}
+P[x\geq 0]z^0&=z^0(1) \\
+P[x\geq 1]z^1&=z^1(1-p_0) \\
+P[x\geq 2]z^2&=z^2(1-p_0-p_1) \\
+P[x\geq k]z^k&=z^k(1-\sum_{i=0}^{k-1}p_k) 
+\end{align*}
+Sum up the above equations, we get
+\begin{align*}
+\sum_{k\geq 0}P[x>k]z^k&=\sum_{i\geq 0}z^i-P_0\sum_{i\geq 1}z^i-P_1\sum_{i\geq 2}z^i-...-P_i\sum_{i\geq k}z^{i+1} \\
+&=(\sum_{k\geq 0}z^k)(1-p_0-p_1z-p_2z^2-p_kz^k) \\
+&=\frac{1}{1-z}(1-z\sum_{k\geq 0}P_kz^k) \\
+&=\frac{1-zp(z)}{1-z}
 \end{align*}
 \end{enumerate}
 
