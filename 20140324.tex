@@ -29,6 +29,8 @@
 \newcommand{\rbr}{\right]}
 \newcommand{\ul}{\underline}
 \newcommand{\ovl}{\overline}
+\newcommand{\RR}{\mathbb{R}} \newcommand{\TT}{\mathbb{T}}
+\newcommand{\ZZ}{\mathbb{Z}} \newcommand{\QQ}{\mathbb{Q}}
 \newcommand{\cA}{{\mathcal A}} \newcommand{\cB}{{\mathcal B}}
 \newcommand{\cC}{{\mathcal C}} \newcommand{\cD}{{\mathcal D}}
 \setlength{\parindent}{0pt}
@@ -40,7 +42,7 @@
 \newenvironment{example}{\begin{EXAMPLE} \hspace{.30em} \rm}%
                       {\end{EXAMPLE}}
 \author{Prof. Micha Hofri/Typeset:  Chao Li, Xinyue Liu}
-\title{CS504 3/24/2014 notes}
+\title{CS504\ \  3/24/2014 notes}
 \newcommand{\twopartdef}[4]
 {
   \left\{
@@ -54,40 +56,100 @@
 \begin{document}
 \maketitle
 
-\section{Asymptotic Analysis}
+\section{Manipulation of asymptotic Expansions}
 
-\subsection{Types}
+\subsection{Main asymptotic classes:}
+The following are the main classes we encounter in analysis of algorithms
+and data structures.  Remember that asymptotic class is related to rate of
+growth, not actual size.
 \begin{enumerate}
-\item logorithmic 
-\item polynomial: $n^a (a>0) $ $a$ has not to be integer
-\item exponential: $b^n (b>1)$ 
-\item super-exponential $ $
+\item logarithmic: $~\log n$
+\item polynomial: $~n^a (a\in \RR_+$; that is, a strictly positive real
+number).
+\item exponential: $~b^n (b>1)$ 
+\item super-exponential (many types, {\em e.g.} $3^{n^2},\, 2^{2^n}$
 \end{enumerate}
 
-\subsection{}
-Let's look at a baby example, calculate an approximation of function \(f_n=\frac{2}{n+2}\) and function \(f_n=\frac{n}{n+2}\)\\
-\[ f_n = \frac{2}{n+2} = \frac{n+2-2}{n+2} = 1 - \frac{2}{n+2} = 1+ O(\frac{1}{n}) \]
+As usual when dealing with asymptotics, functions are assigned to a class
+based on the leading term --- $2^{3n} + n^3$ is an exponential function.
+We also disregard numerical multiplying factors, $n^2$ and $1000n^2+70n$
+are both quadratic polynomials.
+
+\subsection{Simple examples, absolute and relative error terms}
+Let  \(f_n=\frac{2}{n+2}\) and \(g_n=\frac{n^2}{n^2-5}\) be functions we want
+to emphasize their change as $n$ increases.  That is the purpose of
+asymptotic expansions.
+\begin{align*}
+f_n = \frac{2}{n+2} =\frac2n \frac1{1+\frac2n}
+= \frac 2n \lp 1 - \frac2n + \frac 4{n^2} \mp \cdots \rp
+= \frac2n -\frac4{n^2} +O\lp\frac{1}{n^3}\rp
+\end{align*}
+The last term is an absolute error term, of order $O\lp\frac{1}{n^3}\rp$,
+and since the leading term is of order $1/n$, the error term is a relative
+error of order $O\lp n^{-2}\rp$.
+\begin{align*}
+g_n=\frac{n^2}{n^2-5}=\frac1{1-\frac5{n^2}}
+=1 +\frac5{n^2} +\frac{25}{n^4} +\cdots 
+=1 +\frac5{n^2} \lp 1+O\lp\frac{1}{n^2}\rp\rp
+\end{align*}
+Here the last term appears to be a $n^{-2}$ relative error term, relative to
+the 1 it shares a pair of parentheses with, but this is not the right
+point of view: it needs to be compared with the leading term in the
+expression, which is 1 as well, hence it is both an absolute error term
+of order $n^{-4}$, and also such a relative error term.
+
+\subsection{Polynomials are ordered by their degree}
+That means
 \[
-f_n=\frac{n^2}{n^2+2}=\frac{n^2+2-2}{n^2+2}=1-\frac{2}{n^2+2}=1+O(\frac{1}{n^2})
+f_n = n^a, \quad g_n=n^b, \text{ and } 0<a<b \implies f_n \in o(g_n).
 \]
-\subsection{}
-\[ n^a \in o(n^b) \rightarrow 0<a<b \]
+And the reason is is that
+$C_n = f_n/g_n =n^{a-b}$, converges to $0$ when $b>a$ as $n$ increases.
 
-$ C_n = \frac{n^a}{n^b} = \frac{1}{n^{b-a}}$, $C_n$ converges to $0$ when $b>a$ as $n$ increases.
+While the claim made above was for positive powers, the same algebra holds
+for negative powers: the functions decrease, and at a faster rate as the
+powers go down; thus $n^{-3} \in o\lp n^{-1.7}\rp$.  The same ordering:
+smaller is ``smaller.''
 
-\[a^n \in o(b^n) \rightarrow 1<a<b \]
+Similarly, exponentials are ordered by their base:
+\[
+u_n = c^n, \quad v_n=d^n, \text{ and } 0<c<d \implies u_n \in o(v_n),
+%a^n \in o(b^n) \rightarrow 1<a<b
+\]
+for the same reason,
+$ C_n =u_n/v_n =c^n/d^n = (c/d)^n\to 0$, as $n$ increases since $(c/d)<1$.
 
-$ C_n = \frac{a^n}{b^n} = (\frac{a}{b})^n$, $C_n$ decreases as $n$ increases when $b>a>1$.
+\subsection{Polynomials are slower than exponentials}
+Now we compare functions from different asymptotic classes.  Proving that
+logarithms are slower to increase than polynomials was given as homework
+assignment.
 
-\subsection{}
-Next, if we have \(n^a\in o(b^n)\), in which \(a>0, b^n>1\), can we conclude that \( C_n = \frac{n^a}{b^n} \rightarrow 0 \)? \\
+Next, we show the claim in the title of the subsection.  Let
+$f_n = n^a, \quad g_n=b^n$ and the numerical parameters satisfy
+$a>0$ and $b>1$.  The proof method is the same: we form the ratio
+$C_n = f_n/g_n$, and show it converges to zero.  We do this by creating
+one more ratio, $C_{n+1}/C_n$, and show that at some value of $n$ (which can
+be very small or very large, it does not matter for the validity of the
+claim, which is very patient), the ratio becomes smaller than 1, and
+stays so indefinitely as $n$ increases.
 
-\[\frac{C_{n+1}}{C_n} = \frac{(n+1)^a}{n^a} \cdot \frac{b^n}{b^{n+1}} = (1+\frac1n)^a \frac1b\]\\
-if we want $\frac{C_{n+1}}{C_n} < 1$, then:
-\\
-\[(1+\frac1n) < b \rightarrow log(1+\frac1n) < \frac{logb}{a} \rightarrow \frac1n < \frac{logb}{a} \] \\
-\\
-Thus, when $n>\frac{a}{logb}$, we have $C_n \rightarrow 0$
+\[
+\frac{C_{n+1}}{C_n} = \frac{(n+1)^a}{n^a} \cdot \frac{b^n}{b^{n+1}}
+= \lp 1+\frac1n\rp^a \frac1b = \frac1b+\frac a{bn}\lp1+o(1)\rp.
+\]
+The $o(1)$ appears since the next term is of lower order than $1/n$.
+The fraction $1/b$ is smaller than 1, and once $\DS \frac a{bn}<1-\frac1b$ is
+satisfied, at $n_o=a/(b-1)$, we know that for all $n> n_1=2n_o$ the value
+of the last ratio will stay under 1, and therefore $C_n\to0$.
+The doubling of $n_o$
+was made to clear away whatever debris the $o(1)$ above can bring.
+
+
+% if we want $\frac{C_{n+1}}{C_n} < 1$, then:
+% \\
+% \[(1+\frac1n) < b \rightarrow log(1+\frac1n) < \frac{logb}{a} \rightarrow \frac1n < \frac{logb}{a} \] \\
+% \\
+% Thus, when $n>\frac{a}{logb}$, we have $C_n \rightarrow 0$
 
 
 \section{Asymptotic Manipulations}
@@ -99,7 +161,7 @@ Assume we have serires: $g_0(n), g_1(n), g_2(n) ...$, and we know $g_i(n) \in \O
 Define \\
 \[f_n = \sum_{i=0}^k g_i{n} + O(g_{k+1}^n)\]
 , which is \textit{Poincaré series}. \\
-Then the generating function of \emph{Poincar Series} is \\
+Then the generating function of \emph{Poincar\'e Series} is \\
 \[f(r)=f_0+f_1r+f_2r^2+...\]
  which coverges in some $ r<A\qquad (A>1)$.Thus,
 
@@ -234,3 +296,5 @@ H_n=lnn+r+\frac{1}{2n}+?\qquad ?\text{ is }\frac{1}{12n^2}
 \]
 \end{document}
 
+\begin{align*}
+\end{align*}

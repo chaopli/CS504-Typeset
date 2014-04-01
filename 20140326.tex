@@ -1,4 +1,4 @@
-\message{ !name(20140326.tex)}\documentclass[11pt]{article}
+\documentclass[11pt]{article}
 \usepackage{times,mathptmx}
 \usepackage{amsmath,amsthm,amssymb}
 \usepackage{xspace}
@@ -45,9 +45,6 @@
 \title{CS504\ \  3/24/2014 notes}
 
 \begin{document}
-
-\message{ !name(20140326.tex) !offset(-3) }
-
 \maketitle
 \section*{Binomial Coefficients}
 First, let's look at some formulations \\
@@ -56,15 +53,19 @@ First, let's look at some formulations \\
 \]
 Stirling Approximation \\
 \begin{align*}
-n!&=n^n\sqrt{2\pi n}e^{-n}(1+\frac{1}{12n}+O\left(\frac{1}{n^2})\right) \\
+n!&=n^n\sqrt{2\pi n}e^{-n}\left(1+\frac{1}{12n}+O\left(\frac{1}{n^2}\right)\right) \\
 &=\frac{n^ne^{-n}\sqrt{2\pi n}}{k^ke^{-k}\sqrt{2\pi k}(n-k)^{n-k}e^{-n+k}\sqrt{2\pi (n-k)}} \\
 &=\left(\frac{n}{k}\right)^k\left(\frac{n}{n-k}\right)^{n-k}\sqrt{\frac{n}{k(n-k)2\pi}}
 \end{align*}
+\[
+\binom{n}{k+1}=\frac{n!}{(k+1)!(n-k-1)!}=\frac{n!}{k!(n-k)!}\cdot \frac{n-k}{k+1}=\binom{n}{k}\frac{n-k}{k+1}
+\]
+\[
+\binom{a}{b}
+\]
 \end{document}
  
 %%% Local Variables: 
 %%% mode: latex
 %%% TeX-master: t
 %%% End: 
-
-\message{ !name(20140326.tex) !offset(-70) }
