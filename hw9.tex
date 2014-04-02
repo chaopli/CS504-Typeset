@@ -1,0 +1,30 @@
+\documentclass[11pt]{article}
+\usepackage{times,mathptmx}
+\usepackage{amsmath,amsthm,amssymb}
+\usepackage{xspace}
+\title{CS504 HW9}
+\author{Chao Li}
+\begin{document}
+\maketitle
+\section*{2}
+\subsection*{a}
+
+\begin{align*}
+\binom{n}{s-t}&=\binom{n+t}{s} \\
+              &=\frac{(n+t)!}{s!(n+t-s)!} \\
+              &=\binom{n+t}{s}\frac{s(s-1)(s-2)\cdots (s-t+1)}{(n+t)(n+t-1)\cdots (n+t-t+1)} \\
+              &=\binom{n+t}{s}\frac{(s-t)^t}{n^t}\underbrace{\cfrac{(1+\cfrac{1}{s-t})(1+\cfrac{2}{s-t})\cdots (1+\cfrac{t}{s-t})}{(1+\cfrac{1}{n})(1+\cfrac{2}{n})\cdots (1+\cfrac{t}{n})}}_{D} \\
+\end{align*}
+Then partially solve the above equation 
+\begin{align*}
+D&=\cfrac{1+\cfrac{t(t+1)}{2(s-t)}+\cfrac{t(t+1)(3t^2-13t-2)}{24(s-t)^2}}{1+\cfrac{t(t+1)}{2n}+\cfrac{t(t+1)(3t^2-13t-2)}{24n^2}} \\
+ &=\left(1+\frac{t(t+1)}{s(s-t)}\right)\left(1+\frac{t(t+1)}{2n}\right)+o\left(\frac{t^2}{s^2}\right) \\
+ &=1+\frac{t(t+1)}{2n}+\frac{t(t+1)}{2(s-t)}+o\left(t^2\left(\frac{1}{n}+\frac{1}{s-t}\right)\right)
+\end{align*}
+Finally
+\[
+\binom{n}{s-t}=\binom{n+t}{s}\left(\frac{s-t}{n}\right)^t\cdot D
+\]
+\subsection*{b}
+
+\end{document}
