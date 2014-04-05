@@ -1,14 +1,57 @@
-\documentclass{article}
-\author{Prof. Micha Hofri}
+\documentclass[11pt]{article}
+\usepackage{times,mathptmx}
+\usepackage{amsmath,amsthm,amssymb}
+\usepackage{xspace}
+\newcommand{\DS}{\displaystyle}
+\newcommand{\pmfa}{{\sc pmf}\xspace}
+\newcommand{\pmf}{ probability mass function\xspace}
+\newcommand{\pgfa}{{\sc pgf}\xspace}
+\newcommand{\pgf}{ probability generating function\xspace}
+\newcommand{\ogfa}{{\sc ogf}\xspace}
+\newcommand{\ogf}{ ordinary generating function\xspace}
+\newcommand{\egfa}{{\sc egf}\xspace}
+\newcommand{\mgf}{ moment generating function\xspace}
+\newcommand{\egf}{ exponential generating function\xspace}
+\newcommand{\pdf}{ probability density function\xspace}
+\newcommand{\gf}{generating function\xspace}
+\newcommand{\gfa}{{\sc gf}\xspace}
+\newcommand{\bc}{binomial coefficient\xspace}
+\newcommand{\pfd}{ partial fraction decomposition\xspace}
+\newcommand{\lhs}{left-hand side\xspace}
+\newcommand{\rhs}{right-hand side\xspace}
+\newcommand{\lf}{\lfloor}
+\newcommand{\rf}{\rfloor}
+\newcommand{\lc}{\lceil}
+\newcommand{\rc}{\rceil}
+\newcommand{\lp}{\left(}
+\newcommand{\rp}{\right)}
+\newcommand{\lbr}{\left[}
+\newcommand{\rbr}{\right]}
+\newcommand{\ul}{\underline}
+\newcommand{\ovl}{\overline}
+\newcommand{\RR}{\mathbb{R}} \newcommand{\TT}{\mathbb{T}}
+\newcommand{\ZZ}{\mathbb{Z}} \newcommand{\QQ}{\mathbb{Q}}
+\newcommand{\cA}{{\mathcal A}} \newcommand{\cB}{{\mathcal B}}
+\newcommand{\cC}{{\mathcal C}} \newcommand{\cD}{{\mathcal D}}
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{1ex}
+\newtheorem{DEFINITION}{Definition}
+\newenvironment{df}{\begin{DEFINITION} \hspace{.30em}  \rm}%
+          {\hfill\protect$\lhd$\end{DEFINITION}}
+\newtheorem{EXAMPLE}{Example}
+\newenvironment{example}{\begin{EXAMPLE} \hspace{.30em} \rm}%
+                      {\end{EXAMPLE}}
+\author{Prof. Micha Hofri/Typeset: Chao Li}
 \title{Generating Functions}
 \usepackage{amsmath}
 \begin{document}
 \maketitle
+\section*{Generating Functions}
 \begin{description}
 \item[Definition] \hfill \\
-Assume we have a number serie \(\{a_n\}_{n\geq 0}\), then its ordinary
-generating function is \(a(x)=\sum_{n\geq 0}a_nx^n\); its exponential
-generating function is \(\hat{a}(x)=\sum_{n\geq 0}a_n\frac{x^n}{n!}\).
+Assume we have a number serie \(\{a_n\}_{n\geq 0}\), then its Ordinary
+Generating Function(OGF) is \(a(x)=\sum_{n\geq 0}a_nx^n\); its Exponential
+Generating Function(EGF) is \(\hat{a}(x)=\sum_{n\geq 0}a_n\frac{x^n}{n!}\).
 \end{description}
 Now let's look at a simple example: let \(n_n=a_{n+1}, n\geq 0\),
 first on the OGF, then \\
@@ -24,6 +67,64 @@ Next on the EGF, then\\
 &=D_x\sum_{n\geq 0}a_{n+1}\frac{x^{n+1}}{(n+1)!}
 \end{align*}
 \section*{Convolution}
+Assume we have two number series \(a:\{a_n\}_{n\geq 0},b:\{b_n\}_{n\geq 0}\) \\
+Define
+\[
+c=a*b
+\]
+then
+\begin{align*}
+c_n &= \sum_{k}^{}a_kb_{n-k} \\
+	&= \sum_{j}^{}b_ja_{n-j}
+\end{align*}
+\begin{align*}
+c(x) &= \sum_{n\geq 0}c_nx^n	\\
+	 &= \sum_n\sum_ka_kb_{n-k}x^n \\
+	 &= \sum_{k\geq 0}a_k\sum_{n\geq k}b_{n-k}x^n \\
+	 &=\underbrace{\sum_{k\geq 0}a_kx^k}_{a(x)}\underbrace{\sum_{j\geq 0}b_jx^j}_{b(x)}
+\end{align*}
+So we get \\
+\[c(x)=a(x)b(x)\]
+and 
+\[
+\hat{c}(x)=\sum_nc_n\frac{x^n}{n!}=\sum_{n\geq 0}\sum_ka_kb_{n-k}\frac{x^n}{n!}
+\]
+Next, let us define 
+\[
+r_n=\sum_{k}\binom{n}{k}a_kb_{n-k}
+\]
+then we have\\
+\[
+\hat{r}(x)=\sum_n\sum_k\binom{n}{k}a_kb_{n-k}\frac{x^n}{n!}=\sum_ka_k\frac{x^k}{k!}\sum_{n\geq k}b_{n-k}\frac{x^{n-k}}{(n-k)!}
+\]
+Let's look at an example based on this definition\\
+Let \(a_n=1,b_n=f^n\), and \(u_n=\sum_{k=0}^n1\cdot f^k\binom{n}{k}\), which matches the above definition\\
+then we have the Exponential Generating Function of all the three terms \\
+\[
+\hat{a}(x)=\sum1\cdot \frac{x^n}{n!}=e^x
+\]
+\[
+\hat{b}(x)=\sum\frac{(fx)^n}{n!}=e^{fx}
+\]
+\[
+\hat{u}(x)=e^xe^{fx}=e^{x(1+f)}=\sum u_n\frac{x^n}{n!}=\sum_n(1+f)^n\frac{x^n}{n!}
+\]
+Then, from the formula of Binomial, we have\\
+\[
+u_n=(1+f)^n
+\]
+Next let's calculate the generating function of the Harmonic Number \\
+\[
+H_n=\sum_{j=1}^n\frac{1}{j}
+\]
+Then the OGF of it is \\
+\begin{align*}
+H(x) &= \sum_{n\geq 1}H_nx^n	\\
+	 &= \sum_{n\geq 1}\sum_{j\geq 1}\frac{x^n}{j} \\
+	 &= \sum_{j\geq 1}\frac{1}{j}\underbrace{\sum_{n\geq j}x^n}_{\frac{x^j}{1-x}} \\
+	 &= \frac{1}{1-x}\sum_{j\geq 1}\frac{x^j}{j} \\
+	 &= \frac{1}{1-x}ln(1-x)
+\end{align*}
 \end{document}
 %%% Local Variables: 
 %%% mode: latex
