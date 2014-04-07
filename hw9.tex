@@ -8,11 +8,14 @@
 \maketitle
 \section*{2}
 \subsection*{a}
-
+\[
+\binom{n}{s-t}=\frac{n^{\underline{s-t}}}{(s-t)!}
+\]
+\[
+\binom{n+t}{s}=\frac{(n+t)^{\underline{s}}}{s!}
+\]
 \begin{align*}
-\binom{n}{s-t}&=\binom{n+t}{s} \\
-              &=\frac{(n+t)!}{s!(n+t-s)!} \\
-              &=\binom{n+t}{s}\frac{s(s-1)(s-2)\cdots (s-t+1)}{(n+t)(n+t-1)\cdots (n+t-t+1)} \\
+\binom{n}{s-t}&=\binom{n+t}{s}\frac{s(s-1)(s-2)\cdots (s-t+1)}{(n+t)(n+t-1)\cdots (n+t-t+1)} \\
               &=\binom{n+t}{s}\frac{(s-t)^t}{n^t}\underbrace{\cfrac{(1+\cfrac{1}{s-t})(1+\cfrac{2}{s-t})\cdots (1+\cfrac{t}{s-t})}{(1+\cfrac{1}{n})(1+\cfrac{2}{n})\cdots (1+\cfrac{t}{n})}}_{D} \\
 \end{align*}
 Then partially solve the above equation 
@@ -26,5 +29,8 @@ Finally
 \binom{n}{s-t}=\binom{n+t}{s}\left(\frac{s-t}{n}\right)^t\cdot D
 \]
 \subsection*{b}
-
+When \(s=\frac{n}{2}\), then
+\[
+D=
+\]
 \end{document}
