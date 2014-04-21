@@ -1,0 +1,461 @@
+\documentclass[11pt]{article}
+\usepackage{times,mathptmx}
+\usepackage{amsmath,amsthm,amssymb}
+\usepackage{xspace}
+\usepackage[verbose]{wrapfig}
+\usepackage{curves}
+\usepackage{epic}
+\newcommand{\fns}{\footnotesize}
+\newcommand{\frcts}[2]
+{\ensuremath{\raisebox{.3ex}{\fns #1}\!/\!\raisebox{-0.3ex}{\fns#2}}\xspace}
+\newcommand{\half}{\frcts12}
+\newcommand{\DS}{\displaystyle}
+\newcommand{\pmfa}{{\sc pmf}\xspace}
+\newcommand{\pmf}{ probability mass function\xspace}
+\newcommand{\pgfa}{{\sc pgf}\xspace}
+\newcommand{\pgf}{ probability generating function\xspace}
+\newcommand{\ogfa}{{\sc ogf}\xspace}
+\newcommand{\ogf}{ ordinary generating function\xspace}
+\newcommand{\egfa}{{\sc egf}\xspace}
+\newcommand{\mgf}{ moment generating function\xspace}
+\newcommand{\egf}{ exponential generating function\xspace}
+\newcommand{\pdf}{ probability density function\xspace}
+\newcommand{\gf}{generating function\xspace}
+\newcommand{\gfa}{{\sc gf}\xspace}
+\newcommand{\bc}{binomial coefficient\xspace}
+\newcommand{\pfd}{ partial fraction decomposition\xspace}
+\newcommand{\lhs}{left-hand side\xspace}
+\newcommand{\rhs}{right-hand side\xspace}
+\newcommand{\rv}{random variable\xspace}
+\newcommand{\lar}{\Longrightarrow}
+\newcommand{\eqdef}{\stackrel{\rm def}{=}}
+\newcommand{\lf}{\lfloor}
+\newcommand{\rf}{\rfloor}
+\newcommand{\lc}{\lceil}
+\newcommand{\rc}{\rceil}
+\newcommand{\lp}{\left(}
+\newcommand{\rp}{\right)}
+\newcommand{\lbr}{\left[}
+\newcommand{\rbr}{\right]}
+\newcommand{\ul}{\underline}
+\newcommand{\ovl}{\overline}
+\newcommand{\RR}{\mathbb{R}} \newcommand{\TT}{\mathbb{T}}
+\newcommand{\ZZ}{\mathbb{Z}} \newcommand{\QQ}{\mathbb{Q}}
+\newcommand{\cA}{{\mathcal A}} \newcommand{\cB}{{\mathcal B}}
+\newcommand{\cC}{{\mathcal C}} \newcommand{\cD}{{\mathcal D}}
+\newcommand{\eps}{\ensuremath{\varepsilon}\xspace}
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{1ex}
+\newtheorem{DEFINITION}{Definition}
+\newenvironment{df}{\begin{DEFINITION} \hspace{.30em}  \rm}%
+          {\hfill\protect$\lhd$\end{DEFINITION}}
+\newtheorem{EXAMPLE}{Example}
+\newenvironment{example}{\begin{EXAMPLE} \hspace{.30em} \rm}%
+                      {\end{EXAMPLE}}
+\begin{document}
+
+\section{Asymptotic Summation}
+Many analysis problems lead to sums for which we know no closed form.
+The problem of developing asymptotic estimates for such sums has been
+given much attention.  In this section we present several approaches.
+
+The first method assumes fast-varying summands, where the dominant
+contribution to the sum comes from a relatively small portion of the
+summation range; hence its name, ``the critical range method.''
+Then we described the Rice method, which is only useful for certain forms
+of summands involving \bc{s}, and finally 
+we come to the Euler summation formula,
+which is based on the rather obvious idea of
+replacing a sum by an integral.  This is often a good choice
+for slowly changing
+functions (polynomials, rational or algebraic functions...), where the
+critical range method is inapplicable.
+
+\subsection{The Critical Range Method}\label{crm}
+Happily we find that many sums needed for analysis of algorithms
+have the following
+two properties that help in obtaining usable asymptotic values: 
+
+{\bf(a)\ \ } The summands are all positive and unimodal in the index
+of summation (that is, they consist of one or two monotone
+sequences of terms). \\
+{\bf(b)\ \ } Since the terms are fast-changing in size, nearly the
+entire value of the sum comes from the contribution of a small fraction
+of the summation range.
+
+Suppose we want to find the value of the sum that depends on a big parameter
+$n$:
+\[
+S_n = \sum_{k\in D_n} \,a_n (k) \ ,
+\]
+where $D_n$ is a domain of summation (that may also depend on this parameter
+$n$).  The second property above suggests the following procedure to
+handle such sums: 
+\begin{enumerate}
+\item Look for the value of $k = k_0$ that maximizes $a_n (k)$ in
+the given domain:
+\begin{equation}\label{E112.21}
+a_n ( k_0 ) = \max_{k\in D_n} \,a_n (k) \ .
+\end{equation}
+\item Change the index of summation, so that the maximal term obtains at or
+near zero: $j=k_0 -k$, and rewrite the sum as
+\[
+S_n = \sum_{j\in D'_n} \,a_n (k_0 -j) \ .
+\]
+\item Evaluate the remaining sum. Sometimes this can be done directly, often
+various asymptotic approximation methods are naturally applied to estimate
+this value. 
+\end{enumerate}
+
+We demonstrate this method, called the {\bf critical range method},
+with an elaborate example, but it is appropriate to precede it with a
+suggestion (and a warning) that pertains to almost all work in
+asymptotics: \textsl{never trust a formula or a method `blindly.' It is
+necessary that you get to understand the characteristics of the terms of
+the sum, to judge the suitability of the critical range used by the
+formula or method.}
+
+We consider the following sum: 
+\begin{equation}\label{E112.23}
+A_n = \sum_{k=0}^{\lambda n} \,\binom{n}{k}^r,\qquad \mbox{for some  }
+0< \lambda \leq 1,~~r>0, \mbox{~~~and large~~} n .
+\end{equation}
+
+There seems to be no closed form for $A_n$ except when $\lambda =1$ or $1/2$
+and $r$ is a very small integer.
+The maximal value of the summand is obtained at
+\[
+\max_{0\le k\le n} \binom{n}{k} = \left\{ 
+\begin{array}{cl}
+\binom{n}{n/2} & \ \ n \ \ \mbox{is even}, \\
+\binom{n}{\lfloor n/2 \rfloor } = \binom{n}{\lceil n/2 \rceil }& \ \
+n \ \ \mbox{is odd} . 
+\end{array}
+\right. 
+\]
+The derivation of the sum proceeds differently in the cases $\lambda = 1/2, \
+\lambda <1/2$, and $\lambda >1/2$. 
+
+Let us start with $\lambda = 1/2$. If we assume that $n$ is even, the
+sum goes up to the maximum value at $n/2$
+when the sum goes to $\lfloor n/2 \rfloor$).
+We shift the summation index: $j= \frac{n}{2} -k$, and then 
+\begin{equation}\label{E112.26}
+A_n = \sum_{j=0}^{n/2} \,\binom{n}{\frac{n}{2} -j}^r.
+\end{equation}
+This sum is as opaque as the original one, but is easier to manage, since
+the main contribution occurs when the index $j$ is small, allowing to
+truncate expansions.
+We approximate the binomial coefficient $\binom{n}{k}$ using Stirling
+approximation, and this will suggest the continuation.
+\begin{equation}\label{E112.st}
+\binom{n}{k} = \frac{\sqrt{n}}{\sqrt{2\pi k(n-k)}} \,\lp \frac{n}{k}
+\rp^k \lp \frac{n}{n-k} \rp^{n-k} \,\left[ 1+ O\lp \frac{1}{k}
++ \frac{1}{n-k} \rp \right] \ .
+\end{equation}
+With our change of variables,
+$\DS
+k=\frac{n}{2} -j , \quad n-k = \frac{n}{2} +j ,\quad \frac{n}{k} =
+\frac{2n}{n-2j} , \quad \frac{n}{n-k} = \frac{2n}{n+2j} .
+$
+Then the square root term is
+\[
+\frac{\sqrt{n}}{\sqrt{2\pi k(n-k)}} = \frac{\sqrt{n}}{\sqrt{2\pi \lp 
+\frac{n}{2} -j \rp \lp \frac{n}{2} +j \rp  }} =
+\frac{\sqrt{n}}{\sqrt{2\pi \lp 1-\frac{4 j^2}{n^2} \rp} \cdot
+\frac{n}{2}} = \frac{\sqrt{2}}{\sqrt{\pi n}} \cdot
+\frac{1}{\sqrt{1- \frac{4 j^2}{n^2}}} \ .
+\]
+Since the contributing range of $j$ is for small values only, we can use
+the binomial theorem to write for the last denominator
+\[
+(1-x)^{-1/2} = 1 +\frac{1}{2} \, x + \frac{3}{4} \, x^2 + \cdots
+\quad\lar\quad \lp 1-\frac{4 j^2}{n^2} \rp^{-1/2}
+= 1 + \frac{2j^2}{n^2} + O\lp\frac{j^4}{n^4}\rp.
+\]
+Therefore
+\[
+\frac{\sqrt{n}}{\sqrt{2\pi k(n-k)}} = \frac{\sqrt{2}}{\sqrt{\pi n}} \cdot
+\left[ 1+\frac{2j^2}{n^2} + \cdots \right] . 
+\]
+We shall neglect the second term in the brackets, since is below the
+relative error threshold we already established by selecting the Stirling
+approximation truncated as in Eq.\;\eqref{E112.st}.
+For the next two factors in the binomial coefficient we write:
+\[
+\lp \frac{2n}{n-2j} \rp^{n/2 -j}\, \lp \frac{2n}{n+2j} \rp^{n/2 +j} = 
+2^n \,\lp 1 - \frac{2j}{n} \rp^{-n/2 +j}
+\,\lp 1 + \frac{2j}{n} \rp^{-n/2 -j} \eqdef 2^nT_n, 
+\]
+and then
+\begin{equation}\label{E111.27}
+\ln T_n = \lp -\frac{n}{2} +j \rp \,\ln \lp 1 - \frac{2j}{n} \rp
+- \lp\frac{n}{2} +j \rp \,\ln \lp 1 + \frac{2j}{n} \rp .
+\end{equation}
+Now use Maclaurin expansion of the logarithm function to second order,
+$ \ln (1+x) = x - \frac{x^2}{2}$ which holds for $\vert x\vert <1$;
+here the role of $x$ is played by $j/n$ which is in $o(1)$.
+It follows that 
+\[
+\ln\lp1\pm\frac{2j}{n} \rp = \pm\frac{2j}{n} -\frac{1}{2} \,\lp 
+\frac{2j}{n}  \rp^2 \pm \frac{1}{3} \,\lp\frac{2j}{n}  \rp^3 - \cdots.
+\]
+Substituting these into Eq.\;\eqref{E111.27} we find after extensive
+cancellations that
+\[
+\ln T_n = \lp -\frac{n}{2} +j \rp \,\left[ - \frac{2j}{n} -\frac{1}{2}
+\,\lp \frac{2j}{n}  \rp^2 - \cdots \right] - \lp \frac{n}{2} +j
+\rp \,\left[ \frac{2j}{n} -\frac{1}{2} \,\lp \frac{2j}{n}  \rp^2 +
+\cdots \right] = 
+\]
+\[
+\frac{n}{2} \cdot \frac{2j}{n} - \frac{n}{2} \cdot \frac{2j}{n}
+-j\,\frac{2j}{n} - j\,\frac{2j}{n} + \frac{1}{2}\,\frac{n}{2} \cdot \lp 
+\frac{2j}{n} \rp^2 + \frac{1}{2}\,\frac{n}{2} \cdot \lp 
+\frac{2j}{n} \rp^2 - \frac{j}{2} \,\lp \frac{2j}{n} \rp^2 +
+\frac{j}{2} \,\lp \frac{2j}{n} \rp^2 + \cdots =
+\]
+\[
+-\frac{4 j^2}{n} + \frac{n}{2} \,\lp \frac{2j}{n} \rp^2 + \cdots =
+-\frac{4 j^2}{n} + \frac{2 j^2}{n} + \cdots = -\frac{2 j^2}{n} + O\lp 
+ \frac{j^4}{n^3} \rp .
+\]
+$ \ln T_n = - \frac{2 j^2}{n} + O\lp \frac{j^4}{n^3} \rp,$
+where the $O$ term is supported by the Theorem shown in class about the
+remainder term in the expansion of a convergent function, and
+\[
+T_n = \exp \left[ - \frac{2 j^2}{n} + O\lp \frac{j^4}{n^3} \rp \right]
+= \exp \left[ - \frac{2 j^2}{n} \right] \cdot
+\exp\left[O\lp \frac{j^4}{n^3}\rp\right]
+= \exp \left[ - \frac{2 j^2}{n} \right]
+\left[1 + O\lp \frac{j^4}{n^3}\rp\right] .
+\]
+%because $$
+%e^{a+b} = e^a \cdot e^b 
+%$$
+%and $$
+%e^{O\lp \frac{j^4}{n^3}\rp} = 1 + O\lp \frac{j^4}{n^3}\rp \ .
+%$$
+Since $T_n=1$ when $j=0$, the initial factor, $(2/(n\pi ))^{1/2} \,2^n$
+is our approximation of $\binom{n}{n/2}$. 
+
+Collecting all the pieces we find
+\begin{equation}\label{E112.8}
+\binom{n}{\frac{n}{2} -j} =
+\sqrt{\frac{2}{n\pi}} \,2^n \, e^{-2 j^2 /n} \, \left[1+O\lp\frac{j^4}{n^3}
+\rp \right]
+= \binom{n}{n/2}\, e^{-2 j^2 /n} \,
+\left[ 1 + O\lp \frac{j^4}{n^3} \rp \right] . 
+\end{equation}
+We have been justifying our retaining a single ``error term" by citing our
+intention to sum over relatively small values of $j$ only.
+
+The underlying
+reason is our knowledge of the behavior of the \bc{s}: $\binom{n}{k}$
+increase very fast as $k$ increases from 0, but slow down as $k$
+approaches $n/2$, and on the ``shoulder" the rate of change is
+slow.\\[1.3ex]
+
+%
+% Pictures with bell-shaped graph
+%
+\vspace{-0.25in}
+\begin{wrapfigure}{r}{12em}
+\thinlines
+\setlength{\unitlength}{0.0083in}
+\begin{picture}(200,280)(0,0)
+\put(-20,0){\line(1,0){241}}
+\put(0,-20){\line(0,1){320}}
+\curve( 0, .00, 2, .00, 4, .005, 6, .005, 8, .01, 10, .02,
+12, .035, 14, .055, 16, .09, 18, .145, 20, .22,
+22, .34, 24, .505, 26, 0.74, 28, 1.065, 30, 1.515,
+32, 2.11, 34, 2.91, 36, 3.945, 38, 5.29, 40, 6.995,
+42, 9.14, 44, 11.805, 46, 15.07, 48, 19.025, 50, 23.765,
+52, 29.37, 54, 35.935, 56, 43.525, 58, 52.205, 60, 62.025,
+62, 72.995, 64, 85.125, 66, 98.365, 68, 112.66, 70, 127.895,
+72, 143.94, 74, 160.61, 76, 177.70, 78, 194.965, 80, 212.13,
+82, 228.92, 84, 245.02, 86, 260.13, 88, 273.955, 90, 286.20,
+92, 296.615, 94, 304.965, 96, 311.07, 98, 314.79, 100, 316.04, 
+102, 314.79, 104, 311.07, 106, 304.965, 108, 296.615, 110, 286.20,
+112, 273.955, 114, 260.13, 116, 245.02, 118, 228.92, 120, 212.13,
+122, 194.965, 124, 177.70, 126, 160.61, 128, 143.94, 130, 127.895,
+132, 112.66, 134, 98.365, 136, 85.125, 138, 72.995, 140, 62.025,
+142, 52.205, 144, 43.525, 146, 35.935, 148, 29.37, 150, 23.765,
+152, 19.025, 154, 15.07, 156, 11.805, 158, 9.14, 160, 6.995,
+162, 5.29, 164, 3.945, 166, 2.91, 168, 2.11, 170, 1.505,
+172, 1.065, 174, 0.74, 176, .505, 178, .34, 180, .22,
+182, .145, 184, .09, 186, .055, 188, .035, 190, .02,
+192, .01, 194, .005, 196, .005, 198, .00, 200, .00) 
+\put(4,280){$\binom{n}{k}$}
+\put(180,6){$k$}
+\put(94,306){\circle*{6}}
+\put(70,133){\circle*{6}}
+\end{picture}
+%\caption{Binomial coefficients}
+\renewcommand{\thefigure}{\pageref{F11.3}}
+\caption{} \label{F11.3}
+\end{wrapfigure}
+Since when $j=0$ we are at the middle of the shoulder, we need to sum
+until we effectively go off it;  how far do we have to go?
+We need a quantitative estimate, and it is provided by the last relation
+above:
+Since $\binom{n}{\frac{n}{2} -j} \sim \binom{n}{n/2}\, e^{-2 j^2 /n}$,
+we clearly need to go further than $\sqrt{n}$, but in view of the largest
+remaining error term, $j^4/n^3$, we need not exceed $n^{3/4}$.  If we
+pick, say, $n^{0.6}$ as the upper limit of the sum, then at that point we
+find the exponential factor is $\exp(-2n^{0.2})$, which even for
+moderate $n$ is a very small fraction,
+and approaches zero exponentially fast as $n$ increases.
+
+We need not settle on any particular value, and just
+assume that we sum up to $n^s$, with $s\in\,$(0.5,~0.75).
+
+Introducing this approximation into the sum \eqref{E112.26}, we need to
+evaluate:
+\begin{equation}\label{E111.31}
+\sum_{j=0}^{n^s} \,\binom{n}{n/2}^r \,e^{-2 j^2 r/n} =
+\binom{n}{n/2}^r \,\sum_{j=0}^{n^s} \,e^{-2 j^2 r/n} . 
+\end{equation}
+How can this sum be evaluated?  we seem to escape one hurdle only to be
+faced with another, seemingly as high!  Well, here we have a way.  In the
+next section we go in some detail into the relationship between sums and
+integrals (and you may remember from the treatment of Riemann integrals in
+calculus the elements of this relationship), but at this stage we only
+observe the similarity of the above summand to the density function of the
+standard Normal random variable:
+That variable, denoted by $N(0, \sigma^2 )$ 
+has the density function
+$$
+\varphi (x) = \frac{1}{\sqrt{2\pi} \sigma} \,e^{-x^2 / 2 \sigma^2} \quad
+\mbox{and} \quad \int_{-\infty}^\infty \,\varphi (x) \,dx =1 \ .
+$$
+Approximating the series by the corresponding Riemann integral we have, by
+comparison with the last relation,
+\begin{equation}\label{E112.30}
+\sum_{j=0}^{n^s} \,e^{-2 j^2 r/n} \approx \int_0^{n^s} \,e^{-\frac{2r}{n}
+x^2}\,dx \approx \int_0^\infty \,e^{-\frac{2r}{n} x^2}\,dx =
+\sqrt{\frac{n}{2r}} \cdot \frac{\sqrt{\pi}}{2} = \sqrt{\frac{n\pi}{8r}} \ .
+\end{equation}
+Note the second transition, where we replaced the upper limit $n^s$ by
+$\infty$:  the reason is obviously that this integrand, behaving like the
+summand we examined above has vanishing contribution beyond $n^s$; hence
+changing the limit does not change the result, but allows us to use the
+fact that the density integrates to one.
+
+The relative error introduced by extending the range of the sum
+is exponentially small in $n$,
+and is negligible in comparison with the relative error
+we have been carrying all along, $O(n^{-1})$, as seen in
+Eqs.\;\eqref{E112.st} and \eqref{E112.8}.  But what about replacing the sum
+by an integral?  In the next subsection we present the tool, the
+Euler summation formula, which can answer just such questions.
+It can be shown (next HW?)
+that we need to add 1/2 to the value given in Eq.\;\eqref{E112.30}.  Note
+that omitting this half would have contributed a relative error of
+$O(n^{-0.5})$, far larger than any we incurred so far!
+We finally obtain
+\begin{equation}\label{E112.32}
+\sum_{k=0}^{n/2} \,\binom{n}{k}^r = \binom{n}{n/2}^r
+\left[\frac1{2} + \lp \frac{\pi n}{8r} \rp^{1/2} \right]
+\left[ 1 + O\lp n^{-1} \rp \right] . 
+\end{equation}
+The relative error term is the one we used in the Stirling approximation: all
+the steps since then introduced much smaller errors.
+
+\begin{center}
+\begin{tabular}{|r||c|c|c|c|c|c|}
+\hline
+% $n\bs r$
+\setlength{\unitlength}{0.002in}%
+\begin{picture}(150,100)(0,20)
+\put(10,0){$n$} \put(120,70){$r$} \drawline(-60,118)(200,-10)
+\end{picture}
+& 0.5 & 1 & 1.75 & 6.5 & 25 & 100\\ \hline
+16    & $-$.00134470&  .01295039& .01754972& .01888521&  .04874049& .24934293\\
+64    & $-$.00006100&  .00354617& .00492026& .00572733&  .00509321& .04279589\\
+256   & $-$.00000374&  .00092976& .00130802& .00159774&  .00153027& .00129960\\
+1024  & $-$.00000024&  .00023817& .00033759& .00042365&  .00042533& .00038876\\
+4096  & $-$.00000001&  .00006028& .00008578& .00010920&  .00011260& .00010799\\
+16384 & $-$.00000000&  .00001516& .00002162& .00002773&  .00002900& .00002858\\ 
+65536 & $-$.00000000&  .00000380& .00000543& .00000699&  .00000736& .00000736\\
+\hline
+\end{tabular}
+
+A numerical illustration of the relative error in the calculation in
+Eq.\;\eqref{E112.32}
+\end{center}
+%\begin{minipage}{2in}
+The table above shows how well (and otherwise) this calculation
+performs, when viewed as an approximation.  It shows the relative error
+of the estimate given in Eq.\;\eqref{E112.32} in each of the indicated 
+parameter pairs $(n, r)$, and supports the claim that the error is in
+$O(n^{-1})$.
+%\end{minipage}
+The error generally increases with $r$; this is not reflected in the
+calculation.  The dependence is probably complicated, but some information
+can be gleaned from the table:  in most of the columns the error decreases 
+proportionally to $n^{-1}$, except the first column!
+In that column, where $r=\half$, the relative error behaves
+like $O(n^{-2})$. This tells us that the coefficient of the
+term $n^{-1}$ in the asymptotic expansion is proportional to $r-1/2$ (but
+the dependence almost disappears beyond the third column).
+
+Figure \ref{F11.3} attempts to show the form of the function $\binom{n}{x}$,
+for $n=100$, to illustrate the claims about the steep parts at
+the sides and the relatively flatter `shoulder' near the center.
+In fact, in order for the diagram to show any detail it is
+substantially ``squashed," and the actual values presented are 
+$\binom{100}{x}^{0.2}$.  In addition, to motivate further the selection of
+the value $s$ above, two points are added, at $x=n/2-0.5\sqrt{n}$ and
+\vspace{1ex}
+$x=n/2-1.5\sqrt{n}$.
+Note the ratio between the leading term in the result Eq.\;\eqref{E112.32}
+and the leading term of the sum, at $j=0$.  It is large, having the value
+$(\pi n/8r)^{1/2}$.  How to explain this, in view of the aimed
+`steepness" of the function?  The
+reason is that near this maximal term the function is not steep at all,
+and as our formula for the approximation of the change in the value of a
+\bc due to shifting the lower argument shows, changes {\it very slowly}.
+%
+For $\lambda >1/2$ the maximal term, at $k=n/2$,
+occurs well within the range of the
+summation.  Everything proceeds as above, except that we have to use
+the integral on both sides of the origin $j=0$.   For the same reason the
+sum on one side above was completed for half the real line -- now
+it would be allowed to cover the entire
+real line. The final result is then just double the value given in
+Eq.\;\eqref{E112.32}, independently of the precise value of $\lambda$
+(to see why such a blank statement makes sense, let $a=\lambda-1/2$, and
+use the fact that for large $n$, $(1/2 +\eps )n >n/2 + an^s$, with
+the $s$ used above, for
+arbitrarily small $\eps >0$). 
+
+Now look at $\lambda < 1/2$. The maximum term falls again at the summation
+boundary, at the last term: $k_0= \lfloor \lambda n \rfloor$.  This,
+however, is not on the `shoulder' of the curve of the
+function $\binom{n}{k}$, as before, but in the region where the function 
+is steep indeed, and the maximal term,
+$\binom{n}{k_0}$, dominates the sum.
+As before, let $j=k_0 -k$, and again we have a partial sum of \bc{}s, for
+which there is no closed form, so we need to develop an alternative.  It
+will prove to be much simpler than before, when
+we needed to sum \bc{}s close to $n/2$.
+Now, using the result which states that
+$\binom{n}{s+t} \sim \binom{n}{s}\,\lp \frac{n-s}{s} \rp^t $  
+when $t^2$ is very small compared to both $s$ and $n-s$, we can write
+$$
+\binom{n}{\alpha -j} \sim \binom{n}{\alpha} \,\lp \frac{\lambda}{1-\lambda}
+\rp^j .
+$$
+The sum on $j$ reduces to a geometric series: 
+\begin{equation}\label{E112.24}
+\sum_{k=0}^{\lambda n} \,\binom{n}{k}^r \sim \sum_{j\geq 0} \,\binom{n}{
+\alpha}^r \left[ \lp \frac{\lambda}{1-\lambda} \rp^r \right]^j =
+\binom{n}{\lfloor \lambda n \rfloor}^r \,\frac{1}{1-[\lambda
+/(1-\lambda )]^r} .
+\end{equation}
+
+\end{document}
+
+\begin{align*}
+\end{align*}

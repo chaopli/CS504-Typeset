@@ -1,0 +1,85 @@
+\documentclass[11pt]{article}
+\usepackage{times,mathptmx}
+\usepackage{amsmath,amsthm,amssymb}
+\usepackage{xspace}
+\newcommand{\DS}{\displaystyle}
+\newcommand{\pmfa}{{\sc pmf}\xspace}
+\newcommand{\pmf}{ probability mass function\xspace}
+\newcommand{\pgfa}{{\sc pgf}\xspace}
+\newcommand{\pgf}{ probability generating function\xspace}
+\newcommand{\ogfa}{{\sc ogf}\xspace}
+\newcommand{\ogf}{ ordinary generating function\xspace}
+\newcommand{\egfa}{{\sc egf}\xspace}
+\newcommand{\mgf}{ moment generating function\xspace}
+\newcommand{\egf}{ exponential generating function\xspace}
+\newcommand{\pdf}{ probability density function\xspace}
+\newcommand{\gf}{generating function\xspace}
+\newcommand{\gfa}{{\sc gf}\xspace}
+\newcommand{\bc}{binomial coefficient\xspace}
+\newcommand{\pfd}{ partial fraction decomposition\xspace}
+\newcommand{\lhs}{left-hand side\xspace}
+\newcommand{\rhs}{right-hand side\xspace}
+\newcommand{\lf}{\lfloor}
+\newcommand{\rf}{\rfloor}
+\newcommand{\lc}{\lceil}
+\newcommand{\rc}{\rceil}
+\newcommand{\lp}{\left(}
+\newcommand{\rp}{\right)}
+\newcommand{\lbr}{\left[}
+\newcommand{\rbr}{\right]}
+\newcommand{\ul}{\underline}
+\newcommand{\ovl}{\overline}
+\newcommand{\RR}{\mathbb{R}} \newcommand{\TT}{\mathbb{T}}
+\newcommand{\ZZ}{\mathbb{Z}} \newcommand{\QQ}{\mathbb{Q}}
+\newcommand{\cA}{{\mathcal A}} \newcommand{\cB}{{\mathcal B}}
+\newcommand{\cC}{{\mathcal C}} \newcommand{\cD}{{\mathcal D}}
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{1ex}
+\newtheorem{DEFINITION}{Definition}
+\newenvironment{df}{\begin{DEFINITION} \hspace{.30em}  \rm}%
+          {\hfill\protect$\lhd$\end{DEFINITION}}
+\newtheorem{EXAMPLE}{Example}
+\newenvironment{example}{\begin{EXAMPLE} \hspace{.30em} \rm}%
+                      {\end{EXAMPLE}}
+\author{Prof. Micha Hofri/Typeset:  Chao Li}
+\title{Generating Functions - Part 2}
+\begin{document}
+\maketitle
+\section*{Negating Upper Argument}
+For binomial coefficient, we have the following formula:\\
+\[
+\binom{a}{b}=\binom{-a+b-1}{b}(-1)^b
+\]
+Then let's consider the following example\\
+let \(\DS a_n=\binom{n}{m}\), for \(n\geq m\), then we have:\\
+\[
+a_n=\binom{n}{m}=\binom{n}{n-m}
+\]
+and its generating function:
+\[
+a(x)=\sum_{n\geq m}x^n\binom{n}{m}=\sum_{n\geq m}x^n\binom{n}{n-m}
+\]
+substitute our former formula into this equation, we then get
+\[
+a(x)=\sum_{n\geq m}x^n\binom{-n+n-m-1}{n-m}(-1)^{n-m}
+\]
+Let \(n-m=j\) then we have 
+\[
+a(x)=\sum_{j\geq 0}x^{j-m}\binom{-n+n-m-1}{j}(-1)^j=x^m\sum_{j\geq 0}\binom{-m-1}{j}(-x)^j=\frac{x^m}{(1-x)^{m+1}}
+\]
+\section*{An Example}
+Assume we have \(\DS C_n=1+(-1)^n, n\geq 0\)
+then its generating function is 
+\begin{align*}
+C(x) &= \sum_{n\geq 0}(1+(-1)^n)x^n \\
+	 &= \sum_{n\geq 0}x^n+\sum_{n\geq 0}(-x)^n \\
+	 &= \frac{1}{1-x}+\frac{1}{1+x}=\frac{2}{1-x^2} \\
+	 &= \sum_{k\geq 0}2(x^2)^k
+\end{align*}
+\section*{Scaling}
+Assume we have two series \(\{a_n\}\), \(\{b_n\}\), and a constant \(c\). We have \(\DS b_n\overset{\text{def}}{=}c^na_n\)
+So the generating function of them could have the following feature that
+\[
+b(x)=\sum(xc)^na_n=a(cx)
+\]
+\end{document}
